@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Object</title>
+</head>
+<body>
+    <h1>Object</h1>
+
+    <script>
+        const person = {};
+        person.name = '일분이';
+        person.age = 10;
+        //빈 객체에 임의로 속성을 넣었다.
+        //속성 = 프로퍼티(property)
+        
+        person.introduce = function(){
+            console.log('안녕하세요. 저는 일분이이고 나이는 10살이에요.');
+        };
+        //액션을 임의로 넣어준다. (액션 => 함수)
+        person.introduce();
+        //속성중에 함수 값을 가지는 것을 메소드(method)
+    </script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>카드만들기</title>
+    <style>
+        .card{
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100px;
+            height: 150px;
+            border: 2px solid black;
+            border-radius: 10px;
+            font-size: 3rem;
+            font-weight: 900;
+        }
+    </style>
+
+</head>
+<body>
+    <h1>프로토타입을 이용해 카드 만들기</h1>
+    <script>
+        function Card(num, color){
+            this.num = num;
+            this.color = color;
+            this.init();
+        };
+        //프로토타입도 객체이기때문에 {}를 사용해할 수 있다.
+        //단, 주의할점 
+        //constructor 속성을 꼭 설정해줘야한다.(그렇지 않으면 콘솔에 이름이 없는 것으로 나온다.)
+        //Card.prototpye.dddd 일 경우에는 속성을 추가하는 것이라 constructor를 사용하지 않아도 된다.
+        //프로토타입 객체를 만들려고 할때는 꼭 주의하자.
+
+        Card.prototype = {
+            constructor : Card,
+            init : function(){
+                const mainElem = document.createElement('div');
+                mainElem.style.color = this.color;
+                mainElem.innerHTML = this.num;
+                mainElem.classList.add('card');
+                document.body.appendChild(mainElem);
+            }
+        }
+
+        const card1 = new Card(1,'green');
+        const card2 = new Card(7,'blue');
+
+
+        //생성자로 인스턴스를 만드는 과정이다.
+        //공통정 기능 : html으로 div를 만들고 컬러, 숫자 설정, 그리고 그것들을 조립하는 것을 함수로 넣음
+        
+
+    </script>
+</body>
+</html>
