@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Web</title>
+    <!-- 다양한 브라우저에 생기는 문제를 해결해보자.
+    크롬에서는 안정적으로 동작하지만
+    사파리, 익스프로러에 안되는 속성이 있어서 알아봐야 한다.-->
+
+    <!-- 익스플로러에는 .card에 적용한 transform-style : perspected-3d가 적용이 안된다.
+    그래서 .card-side를 감싸고 있는 .card를 지워서 지원해야 한다.-->
+    
+    <style>
+        .world{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 80vw;
+            height: 80vh;
+            background: yellow;
+            perspective: 500px;
+        }
+        .card-side{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 100px;
+            height: 150px;
+            width: 100px;
+            height: 150px;
+            margin: -75px 0 0 -50px;
+            border-radius: 0.5em;
+            font-size:1.5rem;
+            -ms-backface-visibility: hidden; /*익스프로러*/
+            -mos-backface-visibility: hidden; /*모질라*/
+            -o-backface-visibility:hidden; /*오페라*/
+            -webkit-backface-visibility: hidden; /*사파리용*/
+            backface-visibility: hidden;
+            transition: 1s;
+
+        }
+        .card-side-front{
+            background: white;
+            z-index: 1;
+        }
+        .card-side-back{
+            background: red;
+            transform: rotateY(180deg);
+        }
+        .world:hover .card-side-front{
+            transform: rotateY(180deg);
+        }
+        .world:hover .card-side-back{
+            transform: rotateY(360deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="world">
+            <div class="card-side card-side-front">F</div>
+            <div class="card-side card-side-back">B</div>        
+    </div>
+</body>
+</html>
+

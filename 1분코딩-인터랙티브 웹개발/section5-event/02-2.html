@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Web</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/02_02.css">
+</head>
+<body>
+    <div class="stage">
+        <div class="ilbuni a"></div>
+        <div class="ilbuni b"></div>
+        <div class="ilbuni c"></div>
+    </div>
+    
+    <script>
+        (function(){
+            const ilbuniGroup = document.querySelectorAll('.ilbuni');
+            const stage = document.querySelector('.stage');
+
+            function clickHandler(e){
+                //이 코드에서는 this를 사용하면 안된다.왜? stage를 잡아낸다.
+                //이벤트객체의 e.currentTarget과 target이 있는데
+                //이벤트 핸들러 target은 내가 직접 누른 요소를 가르킨다.
+                //이렇게 하면 내가 원하지 않는 곳(stage)에 이벤트가 등록될 수 있다.
+                //if문을 예외처리를 해줘야 한다.
+                if(e.target.classList.contains('ilbuni')){
+                    stage.removeChild(e.target);
+                }
+                //선택한 요소가 ilbuni클래스를 가졌다면(true) stage에서 삭제해라라는 뜻
+                //그렇지 않다면(false) 작동하지 않는다.
+                
+            }
+            //for(let i = 0; i < ilbuniGroup.length; i++){
+            //    ilbuniGroup[i].addEventListener('click', clickHandler);
+            //}
+            // ilbuniGroup[1].addEventListener('click', clickHandler);
+            // ilbuniGroup[2].addEventListener('click', clickHandler);
+            // ilbuniGroup[3].addEventListener('click', clickHandler);의 형식인데 횟수가 많아질 수록 메모리는 잡아먹어 성능이 안좋아진다.
+            //그래서 addEventListener를 하는 횟수를 줄여줘야 좋다. 그래서 여러번 넣어주는건 바람직하지 않다.
+
+            //이벤트 위임
+            //이벤트를 부모요소에 걸어준다.
+            stage.addEventListener('click', clickHandler);
+
+
+        })();
+    </script>
+</body>
+</html>

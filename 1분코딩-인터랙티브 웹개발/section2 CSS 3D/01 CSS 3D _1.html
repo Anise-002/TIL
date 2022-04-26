@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Web</title>
+    <!-- 3D를 만들고 싶으면 3D월드를 만들어야 한다. -->
+    <!-- 1. 공간에 perspecive를 넣어준다. 
+        그 안에 있는 오브젝트 들이 회전같은것을 했을때 공간감을 가지게 된다.
+        이때 물체마다 다르게 공간감을 가질 수 있어 똑같이 주어도 다르게 보일 수 있다.-->
+    <!-- 2. 공간감을 주고 싶은 물체에 transform: perspective를 넣어준다.
+        균일하게 물체를 똑같이 회전 공간감을 줄 수 있다. -->
+    <style>
+        .world{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 80vw;
+            height: 80vh;
+            background: yellow;
+            /* perspective: 500px; */
+            /* perspecive는 눈과 물체의 거리라고 생각하면 된다.
+            눈과의 거리가 가까이 있을때 3D효과는 극적으로 보이고,
+            멀리 있는 물체는 완만한 느낌으로 보여진다. 
+            그래서 500px이 1000px보다 더 극적으로 보여진다.*/
+
+        }
+        .card{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100px;
+            height: 150px;
+            margin: 1em;
+            background: red;
+            border-radius: 0.5em;
+            font-size:1.5rem;
+            /* border-radius를 0.5em 단위로 한 것은 font-size가 변함에 따라 곡률을 변화를 자동으로 주기 위해서 단위를 em와 rem을 주었다.
+            폰트사이즈에 비례하도록 하는 디자인 의도를 넣었다.주요!!!!!! */
+            transform:perspective(500px) rotateY(45deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="world">
+        <div class="card">CARD</div>
+        <div class="card">CARD</div>
+        <div class="card">CARD</div>
+    </div>
+</body>
+</html>

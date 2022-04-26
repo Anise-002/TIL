@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Css transition</title>
+    <style>
+        .box-container{
+            display: flex;
+        }
+        .box{
+            width: 100px;
+            height: 100px;
+            background: rgba(225,225,0, 0.7);
+            border: 2px solid black;
+            transition: 1s cubic-bezier(0, 0.47, 1, 0.7);
+        }
+        .box:hover{
+            transform : scale(2);
+            
+        }
+        /*수치 값의 변화의 중간과정을 보여주는 것을 transition */
+        /* width값의 기본값인 auto일때는 트렌지션이 먹히지 않는다. 그래서 수치값이라고 한다. */
+    </style>
+</head>
+<body>
+    <h1>CSS Transform</h1>
+    //기준점이 가운데에 있어 변형이 용의하다.
+    <p>
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+    </p>
+    <div class="box-container">
+        <div class="box">A</div>
+        <div class="box">B</div>
+        <div class="box">C</div>
+        <div class="box">D</div>
+        <div class="box">E</div>
+    </div>
+    <p>
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+    </p>
+</body>
+</html>

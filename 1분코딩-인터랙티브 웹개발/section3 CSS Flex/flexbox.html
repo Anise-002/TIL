@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Web</title>
+    <!-- flex
+         flex -->
+    <style>
+        .container{ 
+            display: flex; /*가로로 배치 되며 높이가 쭉 늘어나진다*/
+            flex-direction: row;
+            /* flex-direction : row(기본값)- 축이 수평(가로)방향이다. */
+            /* column은 축의 방향이 (세로)라고 이해하면 좋다. */
+            /* 예시 (오뎅 꼬치 = 축) 꽂는 거를 생각하기 */
+            /* flex-direction : row-reverse/ column-reverse있음 */
+            justify-content: flex-start;
+            /* 메인 축을 기준으로 정렬하는 것 
+            flex-satart(기본값) : 시작 점에서 붙여서 정렬
+            flex-end:
+            ****center : 
+            space-between : 양쪽끝에 붙고 균일하게 나눠 정렬(가장 자주사용한다)
+            space-arround : 양쪽 끝에 여백이 생기면서 여백을 균일하게 나눠가지는 것*/
+            align-items: stretch;
+            /* 메인축의 수직 방향을 정렬하는 것
+            stretch(기본값) : 쭉 늘어나 있는 것
+            flex-start : 
+            flex-end :
+            *****center : 
+             */
+            height: 80vh;
+            background: gray;
+        }
+        .item{
+            flex-grow: 1;
+            /* flex-grow에는 숫자 값을 넣는다. */
+            /* 자신의 콘텐트 내용을 제외한 여백의 비율을 나타낸다. */
+            flex-basis: 0;
+            /* *******원래 콘텐츠가 차지하는 영역을 어떻게 할 것 인가에 대한 설정으르 조절한다. */
+            /* auto(기본값) */
+            /* 0으로 하면 의도한 비율대로 비율을 정할 수 있다. */
+            /* 가장 유용하게 사용할 속성이다.******* */
+            flex-shrink: 1;
+            /* flex-grow와 비슷한 개념인데 반대의 개념이다.
+            아이템들이 줄어들때의 비율을 말한다. 일반적으로 grow랑 다르게 사용하지 않는다. */
+            border: 3px solid black;
+            background: white;
+            /* 축약형 : flex : 1;로하면 =(flex-grow: 1; ,flex-basis: 0;, flex-shrink: 1)과 같다.  */
+        }
+        /* .itme:nth-child(1){flex-grow: 1;}
+        .itme:nth-child(2){flex-grow: 5;}
+        .itme:nth-child(3){flex-grow: 2;}
+        .itme:nth-child(4){flex-grow: 3;}
+        .itme:nth-child(5){flex-grow: 1;} */
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="item">AAA</div>
+        <div class="item">BBB</div>
+        <div class="item">CCCCCCC</div>
+        <div class="item">DDD</div>
+        <div class="item">E</div>
+    </div>
+</body>
+</html>

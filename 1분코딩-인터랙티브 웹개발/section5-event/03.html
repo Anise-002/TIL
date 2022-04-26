@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이벤트 위임 보강 인강</title>
+    <!-- 이벤트 위임의 장점 : 반복문을 사용하지 않아 메모리를 적게 쓸 수 있어 성능에 좋으며
+     동적으로 있다고 가정하게 된다면, 새로운 이벤트를 생성할때 따로 코딩을 해야 하는데 원래 존재했던
+    부모에 이벤트 위임을 하게 되면 따로 코드를 작성하지 않아도 부모가 알아서 이벤트를 처리해준다. -->
+    <!-- 예외 처리 방법 2가지 css에 pointer-events : none /js에 if문으로 조건식을 만드는것 -->
+
+
+    <!-- 타켓이 될 엘리먼트가 하위엘리먼트를 가질 때 사용하는 경우!!!! -->
+
+    
+    <link rel="stylesheet" href="css/reset.css">
+    <style>
+        .btn-lable{
+            text-shadow : rgba(225,225,225,1) 0 1px 0;
+            /* pointer-events: none; */
+            /* 클릭이벤트를 안 받게 하는 방법 1. css -> pointer-events : none */
+            /* 주의할점 : 하위에 있는 애들이 클릭 인식이 되지 않을 수 있다. 구조가 복잡하고 하위의 엘리먼트가 클릭이 인지가 되어야 한다면 적절하지 않다
+            이럴때는 스크립트를 이용해야 한다. */
+        }
+        .icon{
+            width: 60px;
+            /* pointer-events: none; */
+        }
+    </style>
+</head>
+<body>
+    <div class="menu">
+        <button class="menu-btn" data-value="1">
+            <img class="icon" src="./images/ilbuni_1.png" alt="일분이1">
+            <span class="btn-lable">일분이 1</span>
+        </button>
+        <button class="menu-btn" data-value="2">
+            <img class="icon" src="./images/ilbuni_2.png" alt="일분이2">
+            <span class="btn-lable">일분이 2</span>
+        </button>
+        <button class="menu-btn" data-value="3">
+            <img class="icon" src="./images/ilbuni_3.png" alt="일분이3">
+            <span class="btn-lable">일분이 3</span>
+        </button>
+    </div>
+    <script>
+        //클릭인지할 엘리먼트의 부모에 이벤트를 넣어준다 -> 이벤트 위임
+        //버튼을 클리할때 버튼에 모든 요소들을 아무곳이나 클릭했을때 같은 값을 받으려고 하는 것이다.
+        const menu = document.querySelector('.menu');
+
+        function cilckBtnHandler(event){
+            let elem = event.target; //클릭된 요소를 뜻한다.
+            while (!elem.classList.contains('menu-btn')){ 
+                //왜 whole문으로 썼냐면 요소들마다 클래스 'menu-btn'을 가지고 있는지 확인해야 하는 작업을 반복해야하는데 정확한 횟수를 알지 못하기 때문에 while문을 사용한 것이다.
+                //왜 알지 못하냐면, html구조에서 부모요소가 여러개 있을 수도 있고 자식 요소가 내 예상보다 많을 수도 있으니 while로 하는 것이 바람직하다.
+                elem=elem.parentNode;
+                //내가 클릭한 요소에 클래스 menu-btn이 없다면 -> elem에 클릭한 요소의 부모요소를 넣어 클래스 menu-btn을 가진 요소가 나타날때 까지 반복한다.
+                //클래스 menu-btn이 나올때에는 while문을 빠져나가는데 그 시점이 내가 클릭이벤트를 지정하고 싶은 영역과 같다.
+                //이미지와 텍스트를 클릭하더라도 결과 값이 버튼 영역을 클릭했을때의 결과 값과 같이 나오며, 버튼 영역을 클릭한 효과를 가져온다.
+                if(elem.nodeName == 'BODY'){
+                    elem = null;
+                    return;
+                }
+            }
+            //왜 이 while문을 사용하냐면, 
+            //버튼의 이미지와 텍스트를 클릭했을때 같은 이벤트를 처리하고 싶은데 지정한
+            //이벤트를 시키려면 하나하나 다 코드를 작성해야 하는데 반복문을 이용해서 버튼영역을 클릭했을때의 이미지와 텍스트도 같은 값을 가질 수 있도록 하기 위해서다.
+            //이 부분들을 클릭 이벤트를 받지 않게 할려고 이 문장을 썼다.
+            console.log(elem.dataset.value);
+            // console.log(event.target.getAttribute('data-value'));
+            // console.log(event.target.dataset.value);
+
+        }
+        //event매개변수는 이벤트 매개변수로 addEventListener를 실행했을때에 첫번째 매개변수로 생겨나는 이벤트 매개변수이다.
+        //여러가지 값을 가지고 있다.
+
+      
+        menu.addEventListener('click',cilckBtnHandler);
+        //이벤트 위임을 해준다.
+        
+    </script>
+</body>
+</html>

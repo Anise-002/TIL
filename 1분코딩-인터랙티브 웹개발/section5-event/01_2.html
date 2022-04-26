@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Interactive Web</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <style>
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        .characters {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            background: #fff000;
+        }
+        .ilbuni {
+            width: 100px;
+            cursor: pointer;
+        }
+        .characters .ilbuni {
+            display: inline-block;
+        }
+        .special {
+            border: 10px dashed red;
+        }
+    </style>
+</head>
+<body>
+    <div class="characters">
+        <div class="ilbuni a">
+            <img src="images/ilbuni_0.png" alt="일분이">
+        </div>
+        <div class="ilbuni b">
+            <img src="images/ilbuni_1.png" alt="일분이">
+        </div>
+        <div class="ilbuni c">
+            <img src="images/ilbuni_2.png" alt="일분이">
+        </div>
+        <div class="ilbuni d">
+            <img src="images/ilbuni_3.png" alt="일분이">
+        </div>
+    </div>
+ <!-- 스크립트는 바디 밑에 적는다면 로드 이벤트를 이용하지 않아도 작동한다.
+    브라우저가 문서를 읽을때 스크립트를 로드할 지점에는 모든 것들이 로드가 되기 때문에  번거롭지 않는다.-->
+    <script>
+        //자바스크립트 이벤트 기초
+        //대표적으로는 클릭이벤트, 마우스 움직이는, 브라우저 사이즈가 움직였을때, 데이터 로드가 완료된 것
+        //클릭이벤트 : 가장 많이 쓰이는 이벤트 
+        //이벤트 등록하는 것 : addEventListener
+        //클릭하면 스페셜 클래스가 추가되는 것으로 만들어 보겠다.
+        const ilbuni = document.querySelector('.ilbuni:nth-child(3)');
+        ilbuni.addEventListener('click', function(){
+            ilbuni.classList.add('special');
+        });
+
+        
+    </script>
+</body>
+</html>

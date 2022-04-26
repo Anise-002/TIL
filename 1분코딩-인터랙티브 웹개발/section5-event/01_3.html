@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Interactive Web</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <style>
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        .characters {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            background: #fff000;
+        }
+        .ilbuni {
+            width: 100px;
+            cursor: pointer;
+        }
+        .characters .ilbuni {
+            display: inline-block;
+        }
+        .special {
+            border: 10px dashed red;
+        }
+    </style>
+</head>
+<body>
+    <div class="characters">
+        <div class="ilbuni a">
+            <img src="images/ilbuni_0.png" alt="일분이">
+        </div>
+        <div class="ilbuni b">
+            <img src="images/ilbuni_1.png" alt="일분이">
+        </div>
+        <div class="ilbuni c">
+            <img src="images/ilbuni_2.png" alt="일분이">
+        </div>
+        <div class="ilbuni d">
+            <img src="images/ilbuni_3.png" alt="일분이">
+        </div>
+    </div>
+    <script>
+       //const ilbuni은 전역 변수 : 어디서든 접근할 수 있는데 전역변수를 난발하면 
+       //협업할 때 충돌할 수 있는 위험이 있기때문에
+        //함수안에 넣어 사용하는 것이 좋다.
+        //함수 안에 넣으면 함수를 호출[();]해야 한다. 
+        //초기화 함수일때는 이름을 적지 않고 이름없는 함수로 만들 수 있다.
+        //함수(){}뒤에 ();를 바로 작성하면 에러가 뜬다.(함수 선언문에 + ();를 붙인 형태)
+        //그래서 함수(){}의 식에 ()를 더 넣어준다. (함수(){})();이런 형태가 되면 제대로 작동된다.
+        //함수를 통째로 괄호로 감싼형태이며 호출 연산자로 함수를 불러 들인것이다.라고 생각하면 된다.
+        (function(){
+            const ilbuni = document.querySelector('.ilbuni.c');
+            function clickInbuniHandler(){
+                ilbuni.classList.toggle('special');
+            }
+            ilbuni.addEventListener('click',clickInbuniHandler);
+        })();
+        //따라서 전역변수 없이 스크립트를 만들었다.
+
+    </script>
+    
+</body>
+</html>

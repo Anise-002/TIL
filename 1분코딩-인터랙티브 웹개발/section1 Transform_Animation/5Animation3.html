@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fram by fram css Animation(/* 스프라이트 이미지를 이용한 애니메이션 만들기 */)</title>
+    <style>
+        /* 참고)이미지를 고화질로 나타내기 위해 원하는 크기보다 2배크기로 제작한다.  */
+        @keyframes spaceship-ani{
+            /* 타임라인의 시작지점을 form으로 생략 가능하며 끝지점은 to로 쓸수 있다. */
+            to{
+                background-position: -2550px 0;
+            }
+            /* 이미지 크기는 5100px이지만 지금 현재 이미지를 1/2크기로 줄여서 웹상에 구현했기 때문에
+                이미지 끝지점 position의 크기는 5100/2인 2550px로 지정해줘야 된다. */
+        }
+        .spaceship{
+            width: 150px;
+            height: 150px;
+            background: url(images/sprite_spaceship.png) no-repeat 0 0 / auto 150px;
+            animation: spaceship-ani 1s infinite steps(17);
+            /* 일반 애니메이션은 이어지니까 스텝으로 딱딱 움직일 수 있게 하기 위해서는 */
+            /* 스텝으로 움직여야 하니까 애니메이션 속성인 steps()를 이용하면됨 */
+        }
+        /* 참고) gif는 알파채널(투명도)가 나타나지 않기 때문에 gif를 사용하지 않고 투명한png이미지를 사용한것 */
+        /* 코드로 애니메이션을 제어할 수 있기 떄문에 원할시에 코드로 제어 가능!!!!! 속도, 크기, 등등등*/
+        /* 구글 로고 두들만들때에도 이런 이미지 스프라이트 기능을 사용한다. */
+
+    </style>
+</head>
+<body>
+    <div class="spaceship">
+
+    </div>
+</body>
+</html>

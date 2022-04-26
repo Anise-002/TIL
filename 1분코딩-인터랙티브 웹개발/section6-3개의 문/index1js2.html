@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3개의 문</title>
+    <!-- 스크립트 버전 -->
+    <link rel="stylesheet" href="css/reset.css">
+    <style>
+        .stage{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100vw;
+            height: 100vh;
+            background-color: #333;
+        }
+        .door{
+            position: relative;
+            width: 100px;
+            height: 150px;
+        }
+        .door-back{
+            overflow: hidden;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: black;            
+        }
+        .ilbuni{
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100px;
+            height: 100px;
+            background-repeat: no-repeat;
+            background-position: 50% 100%;
+            background-size: contain;
+            transition: 0.5s 0.5s;
+            /* 앞은 duration 뒤에는 delay 0.5초 안으로 애니메이션 하지만 0.5초 후에 등장한다. */
+            transform: translate3d(100%,0,0);
+        }
+        /* transform : translate3d 는 퍼포먼스 성능을 translatex나 y보다 부드럽게 좋게 해준다더라... */
+        .door:nth-child(1) .ilbuni {background-image: url(./images/ilbuni_0.png);}
+        .door:nth-child(2) .ilbuni {background-image: url(./images/ilbuni_1.png);}
+        .door:nth-child(3) .ilbuni {background-image: url(./images/ilbuni_2.png);}
+        .door-body{
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            transition: 0.5s;
+            transform-origin: left;
+        }
+        .door:nth-child(1) .door-body{background: rgba(255,0,0,0.7);}
+        .door:nth-child(2) .door-body{background: rgba(0,255,0,0.7);}
+        .door:nth-child(3) .door-body{background: rgba(0,0,225,0.7);}
+        .door-opened .door-body{
+            transform :perspective(800px) rotateY(-110deg);
+        }
+        .door-opened .ilbuni{
+            transform: translate3d(0,0,0);
+        }
+    </style>
+</head>
+<body>
+    <div class="stage">
+        <div class="door">
+            <div class="door-back">
+                <div class="ilbuni"></div>
+            </div>            
+            <div class="door-body"></div>
+        </div>
+        <div class="door">
+            <div class="door-back">
+                <div class="ilbuni"></div>
+            </div>
+            <div class="door-body"></div>
+        </div>
+        <div class="door">
+            <div class="door-back">
+                <div class="ilbuni"></div>
+            </div>
+            <div class="door-body"></div>
+        </div>
+    </div>
+    <script>
+        (function(){
+            const stageElem = document.querySelector('.stage');
+            // 현재 활성화된 아이템 저장
+            let currentItem;
+
+            function doorHandler(e){
+                const targetElem = e.target;
+
+                if(currentItem){
+                    currentItem.classList.remove('door-opened');
+                }
+                //currentItme의 값이 있으면 동작하세요.
+
+                if(targetElem.classList.contains('door-body')){
+                    targetElem.parentNode.classList.add('door-opened');
+                    currentItem = targetElem.parentNode;
+                    //이곳에서 저장된다. 
+                } 
+            }
+            stageElem.addEventListener('click',doorHandler);
+
+        })();
+    </script>
+
+</body>
+</html>

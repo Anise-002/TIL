@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Web</title>
+    <!-- transform-style: preserve-3d 
+         backface-visibility: hidden
+         transform-origin: left;-->
+    
+    <style>
+        .world{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 80vw;
+            height: 80vh;
+            background: yellow;
+            perspective: 500px;
+        }
+        .card{
+            position: relative;
+            width: 100px;
+            height: 150px;
+            margin: 1em;
+            transform: rotateY(0deg);
+            /* 0deg를 넣어주는 브라우저가 준비를 할 수 있게 해주는 장치이다.
+            변화가 있다면 변화의 디폴트 값을 코드로 넣어줘야 성능적으로 효율적이다. */
+            transition: 1s;
+            transform-style: preserve-3d;
+            /* world에 넣어던 perspective가 card안에 있는 div에 적용이 되지 않기 때문에
+            적용을 시켜주기 위해서 사용하는 속성 : transform-style: preserve-3d */
+            transform-origin: left;
+            /* 기준점을 왼쪽으로 적용한다. */
+        }
+        .card-side{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 0.5em;
+            font-size:1.5rem;
+            backface-visibility: hidden;
+            /* 뒤집어질때 뒷면이 보이지 않게 하는 속성 backface-visibility: hidden; */
+        }
+        .card-side-front{
+            background: white;
+            z-index: 1;
+        }
+        .card-side-back{
+            background: red;
+            /* 호버할때 뒷면이 보여야 하기때문에 돌려야 한다.*/
+            transform: rotateY(180deg);
+        }
+        .world:hover .card{
+            transform: rotateY(-180deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="world">
+        <div class="card">
+            <div class="card-side card-side-front">F</div>
+            <div class="card-side card-side-back">B</div>
+        </div>
+        
+    </div>
+</body>
+</html>
+

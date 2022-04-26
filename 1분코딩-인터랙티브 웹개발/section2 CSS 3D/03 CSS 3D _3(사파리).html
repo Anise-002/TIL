@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Web</title>
+    <!-- 다양한 브라우저에 생기는 문제를 해결해보자.
+    크롬에서는 안정적으로 동작하지만
+    사파리, 익스프로러에 안되는 속성이 있어서 알아봐야 한다.-->
+
+    <!-- 사파리에서 backface-visibility : hidden이 지원이 되지만 부자연스럽다.
+        그래서, <vendor prefix>를 이용해 -webkit-접두어를 사용해야 한다.-->
+    
+    <style>
+        .world{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 80vw;
+            height: 80vh;
+            background: yellow;
+            perspective: 500px;
+        }
+        .card{
+            position: relative;
+            width: 100px;
+            height: 150px;
+            margin: 1em;
+            transform: rotateY(0deg);
+            transition: 1s;
+            transform-style: preserve-3d;
+            /* 인터넷 익스프로러에는 적용이 안된다. */
+            transform-origin: left;
+        }
+        .card-side{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 0.5em;
+            font-size:1.5rem;
+            -ms-backface-visibility: hidden; /*익스프로러*/
+            -mos-backface-visibility: hidden; /*모질라*/
+            -o-backface-visibility:hidden; /*오페라*/
+            -webkit-backface-visibility: hidden; /*사파리용*/
+            backface-visibility: hidden;
+            /* 벤더 접두어넣을때에는 표준속성을 아래에 꼭꼭 넣어줘야 한다!!! */
+            /* 위에 표준속성을 넣으면 벤더 접두어로 지정한 기능이 덮어씌여져서 접두어를 사용하지 않는 브라우저에는 작동이 안될 수 도 있다. */
+            /* 새로만들어진 새로운 기능에 브라우저 마자 접두어를 붙여줘야하는 일이 있다. */
+
+        }
+        .card-side-front{
+            background: white;
+            z-index: 1;
+        }
+        .card-side-back{
+            background: red;
+            transform: rotateY(180deg);
+        }
+        .world:hover .card{
+            transform: rotateY(-180deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="world">
+        <div class="card">
+            <div class="card-side card-side-front">F</div>
+            <div class="card-side card-side-back">B</div>
+        </div>
+        
+    </div>
+</body>
+</html>
+
