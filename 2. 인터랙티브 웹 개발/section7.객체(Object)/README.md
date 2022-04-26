@@ -117,7 +117,7 @@ const person2 = new Person('이분이', 8);
 
 
 ## 생성자 함수로 인스턴스 카드 만들기
-<img src="./카드 완성본.png">
+<img src="카드 완성본.png">
 
 ```
 
