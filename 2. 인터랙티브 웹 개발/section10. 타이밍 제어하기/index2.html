@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .btn{
+        font-size: 2rem;
+    }
+</style>
+<body>
+    <button class="btn">취소</button>
+    <!--버튼을 클릭하면 setTimeout이 취소되도록 -->
+    <script>
+        let timeId;
+        const btn = document.querySelector('.btn');
+
+        function sample(){
+            console.log('sample!');
+        };
+
+        timeId = setTimeout(sample, 3000);
+
+        btn.addEventListener('click', function(){
+            clearTimeout(timeId);
+        })
+    </script>
+</body>
+</html>

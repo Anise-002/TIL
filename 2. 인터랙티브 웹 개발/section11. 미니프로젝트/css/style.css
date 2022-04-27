@@ -1,0 +1,84 @@
+body {
+    height: 500vw;
+    font-family: 'Apple SD Gothic Neo', 'Roboto', 'Noto Sans KR', NanumGothic, 'Malgun Gothic', sans-serif;
+    -webkit-overflow-scrolling: touch;
+    color: #555;
+    background: #fff000;
+    /* transition: background .5s; */
+}
+.world{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    perspective: 1000px;
+}
+/* .stage는 캐릭터랑 집을 같이 감쌀 컨테이너 */
+.stage{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    transform-style: preserve-3d;
+    /* .world에 perspectiv를 줘야 자식요소까지 3d효과를 가질 수 있게 해주는 것 */
+    /* IE는 지원이 안됨/웹킷 기반 브라우저에 지원됨 */
+}
+.house{
+    width: 100vw;
+    height: 100vh;
+    transform: translateZ(-490vw);
+    transform-style: preserve-3d;
+}
+.wall{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(255,255,255,0.8);
+}
+.wall-left{
+    left: -500vw;
+    width: 1000vw;
+    background: #f8f8f8;
+    transform: rotateY(90deg);
+}
+.wall-right{
+    left: -500vw;
+    width: 1000vw;
+    background: #f8f8f8;
+    transform: rotateY(90deg) translateZ(100vw);
+    /* translateZ로 움직인 이유는 y축으로90도로 돌렸기 때문에 x축이 아니라 z축쪽으로 움직인거다. */
+
+}
+.wall-front-a{transform: translateZ(300vw);}
+.wall-front-b{transform: translateZ(50vw);}
+.wall-front-c{transform: translateZ(-200vw);}
+.wall-front-d{transform: translateZ(-500vw);}
+/* translateZ에 490vw로 하면 화면 꽉차게 나온다. */
+
+.wall-content{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+.wall-title{
+    font-size: 5rem;
+}
+.progress-bar-con{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    width: 100vw;
+    height: 5px;
+    background: #555;
+}
+.progress-bar{
+    width: 0;
+    height: 5px;
+    background: #00a8ff;
+}
