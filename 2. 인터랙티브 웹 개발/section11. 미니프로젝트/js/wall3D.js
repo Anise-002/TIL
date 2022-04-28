@@ -1,8 +1,11 @@
 (function(){
     
     const houseElem = document.querySelector('.house');
+    const stageElem = document.querySelector('.stage');
     let maxScrollValue;
+    const mousePos = {x : 0, y:0};
     const barELem = document.querySelector('.progress-bar');
+    
 
     function resizeHandler(){
         maxScrollValue = document.body.offsetHeight - window.innerHeight;
@@ -19,6 +22,14 @@
 
         //프로그래스바 
         barELem.style.width =  (scrollPer*100)+ '%';
+    });
+    
+    window.addEventListener('mousemove',function(e){
+        // console.log(e.clientX, e.clientY);
+        mousePos.x = -1 +(e.clientX/this.window.innerWidth) * 2;
+        mousePos.y = 1 - (e.clientY/this.window.innerHeight) * 2;
+        // console.log(mousePos.x, mousePos.y);
+        stageElem.style.transform = 'rotateX(' + (mousePos.y * 5) + 'deg) rotateY(' + (mousePos.x * 5) +'deg)';
     });
 
     window.addEventListener('resize',resizeHandler);
