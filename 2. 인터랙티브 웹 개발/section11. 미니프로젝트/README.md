@@ -48,4 +48,66 @@ stageElem.style.transform = 'rotateX(' + mousePos.x + 'deg) rotateY(' + mousePos
         stageElem.style.transform = 'rotateX(' + (mousePos.y * 5) + 'deg) rotateY(' + (mousePos.x * 5) +'deg)';
 ```
 
-## 4.
+## 4. 3D 캐릭터 구현 
+### HTML
+```html
+<div class="character">
+            <div class="character-face-con character-head">
+                <div class="character-face character-head-face face-front"></div>
+                <div class="character-face character-head-face face-back"></div>
+            </div>
+            <div class="character-face-con character-torso">
+                <div class="character-face character-torso-face face-front"></div>
+                <div class="character-face character-torso-face face-back"></div>
+            </div>
+            <div class="character-face-con character-arm character-arm-right">
+                <div class="character-face character-arm-face face-front"></div>
+                <div class="character-face character-arm-face face-back"></div>
+            </div>
+            <div class="character-face-con character-arm character-arm-left">
+                <div class="character-face character-head-face face-front"></div>
+                <div class="character-face character-head-face face-back"></div>
+            </div>
+            <div class="character-face-con character-leg character-leg-right">
+                <div class="character-face character-head-face face-front"></div>
+                <div class="character-face character-head-face face-back"></div>
+            </div>
+            <div class="character-face-con character-leg character-leg-left">
+                <div class="character-face character-head-face face-front"></div>
+                <div class="character-face character-head-face face-back"></div>
+            </div>
+
+        </div>
+```
+### CSS
+### JS
+1.생성자를 이용해 만들기
+
+2.클릭하면 그 위치에 캐릭터 생성하기
+
+3. 스크롤 했을때 캐릭터 움직이게 하기
+3-1.css에 runing클래스를 붙여 애니메이션 실행하기
+```css
+.character.running .character-leg-right { animation: ani-running-leg 0.2s alternate infinite linear; }
+.character.running .character-leg-left { animation: ani-running-leg 0.2s alternate-reverse infinite linear; }
+.character.running .character-arm { animation: ani-running-arm 0.2s alternate infinite linear; }
+```
+3-2. runnig클래스 붙이기
+
+3-3. 스크롤이 멈추면 running클래스 제거해 움직임 멈추기
+
+3-4. 캐릭터 뒤통수 보이게 하기
+
+4. 캐릭터 키보드로 좌우로 움직이게 하기
+
+※ 참고) keycode.info ->키보드 코드를 알려주는 웹사이트 
+
+4.1 keydown 이벤트, keyup 이벤트
+
+4.2 좌우로 이동하는 것 (속도도 다르게 한다.)
+requestAnimationFrame을 활용.
+
+5. 속도를 랜덤으로 만들기
+
+
+
