@@ -200,7 +200,7 @@ Object.defineProperty(person, 'fullName',{
 ### 16.5.1 객체 확장 금지
 `Object.preventExtension 메서드` 
 >+ 프로퍼티 추가 금지 (동적 추가, Object.defineProperty메서드)
-+ `Object.isExtension 메서드`로 확장 가능한 객체인지 확인 할 수 있다.
+>+ `Object.isExtension 메서드`로 확장 가능한 객체인지 확인 할 수 있다.
 
 ```javascript
 const person = {name : 'Lee'};
@@ -215,29 +215,29 @@ console.log(Object.isExtension(person)); //false
 ```
 1. 프로퍼티 추가 금지된다.
 >```javascript
-  person.age = 20;
-  //무시. strict mode에서는 에러
-  console.log(person);
-  //{name : 'Lee'}
-  ```
+>  person.age = 20;
+>  //무시. strict mode에서는 에러
+>  console.log(person);
+>  //{name : 'Lee'}
+>  ```
 2. 프로퍼티 추가는 금지되지만 삭제는 가능하다.
 >```javascript
-  delete.person.name;
-  console.log(person); //{}
-  ```
+>  delete.person.name;
+>  console.log(person); //{}
+>  ```
 3. 프로퍼티 정의에 의한 프로퍼티 추가도 금지된다.
 >```javascript
-  Object.defineProperty(person, 'age',{value : 20});
-  //TypeError : Cannnot define property age, object is not extensible
-  ```
+>  Object.defineProperty(person, 'age',{value : 20});
+>  //TypeError : Cannnot define property age, object is not extensible
+>  ```
 
 <br>
 
 ### 16.5.2 객체 밀봉
 `Object.seal 메서드`
 >밀봉된 객체는 읽기와 쓰기만 가능하다.
-+ 추가, 삭제, 재 정의를 금지
-+ `Object.isSealed 메서드`로 밀봉 객체 여부 확인 가능
+>+ 추가, 삭제, 재 정의를 금지
+>+ `Object.isSealed 메서드`로 밀봉 객체 여부 확인 가능
 
 ```javascript
 const person = {name : 'Lee'};
@@ -259,34 +259,34 @@ name : {value : 'Lee', wirtable : true, enumerable : true, configurable : false,
 
 1. 프로퍼티 추가가 금지된다.
 >```javascript
-person.age = 20;
-//무시. strict mode에서는 에러
-console.log(person); 
-//{name : "Lee"}
-   ```
+>person.age = 20;
+>//무시. strict mode에서는 에러
+>console.log(person); 
+>//{name : "Lee"}
+>```
    
 1. 프로퍼티 삭제가 금지된다.
 >```javascript
-  delete.person.name;
-  //무시. strict mode에서는 에러
-  console.log(person); //{name : 'Lee'}
-  ```
+>  delete.person.name;
+>  //무시. strict mode에서는 에러
+>  console.log(person); //{name : 'Lee'}
+>  ```
 1. 프로퍼티 값 갱신은 가능하다.
 >```javascript
-  person.name = 'Kiem';
-  console.log(person); //{name : 'Kim'}
+>  person.name = 'Kiem';
+>  console.log(person); //{name : 'Kim'}
 1. 프로퍼티 어트리뷰트 재정의가 금지된다.
 >```javascript
-  Object.defineProperty(person, 'name',{configurable : true});
-  //TypeError : Cannnot redefine propery : name
+>  Object.defineProperty(person, 'name',{configurable : true});
+>  //TypeError : Cannnot redefine propery : name
     
 <br>
 
 ### 16.5.3 객체 동결
 `Object.freeze 메서드`
 > 동결된 객체는 읽기만 가능하다.
-+ 프로퍼티 추가, 삭제, 재정의, 쓰기 금지
-+ `Object.isFrozen 메서드` 동결 객체인지 여부 확인 가능
+>+ 프로퍼티 추가, 삭제, 재정의, 쓰기 금지
+>+ `Object.isFrozen 메서드` 동결 객체인지 여부 확인 가능
 
 ```javascript
 const person = {name : 'Lee'};
@@ -308,30 +308,30 @@ name : {value : 'Lee', wirtable : false, enumerable : true, configurable : false
 
 1. 프로퍼티 추가가 금지된다.
 >```javascript
-person.age = 20;
-//무시. strict mode에서는 에러
-console.log(person); 
-//{name : "Lee"}
-   ```
+>person.age = 20;
+>//무시. strict mode에서는 에러
+>console.log(person); 
+>//{name : "Lee"}
+>```
 2. 프로퍼티 삭제가 금지된다.
 >```javascript
-  delete.person.name;
-  //무시. strict mode에서는 에러
-  console.log(person); //{name : 'Lee'}
-  ```
+>  delete.person.name;
+>  //무시. strict mode에서는 에러
+>  console.log(person); //{name : 'Lee'}
+>  ```
 3. 프로퍼티 값 갱신이 금지된다.
 >```javascript
-  person.name = 'Kim';
-  //무시, strict mode에서 에러
-  console.log(person); 
-  //{name : 'Lee'}
-  ```
+>  person.name = 'Kim';
+>  //무시, strict mode에서 에러
+>  console.log(person); 
+>  //{name : 'Lee'}
+>  ```
 
 4. 프로퍼티 어트리뷰트 재정의가 금지된다.
 >```javascript
-  Object.defineProperty(person, 'name',{configurable : true});
-  //TypeError : Cannnot redefine propery : name'
-  ```
+>  Object.defineProperty(person, 'name',{configurable : true});
+>  //TypeError : Cannnot redefine propery : name'
+>  ```
   
 <br>
 
