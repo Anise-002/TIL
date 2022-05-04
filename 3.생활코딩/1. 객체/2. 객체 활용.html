@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>객체 활용</title>
+</head>
+<body>
+    <h1><a href="index.html">WEB</a></h1>
+        <input id="night_day" type="button" value="night" onclick="nightDayHandler(this);">
+    <ol>
+        <li><a href="1.html">HTML</a></li>
+        <li><a href="2.html">CSS</a></li>
+        <li><a href="3.html">JavaScript</a></li>
+    </ol>
+    <h2>JavaScript</h2>
+    <p>
+        JavaScript (/ˈdʒɑːvəˌskrɪpt/[6]), often abbreviated as JS, is a high-level, dynamic, weakly typed, prototype-based, multi-paradigm, and interpreted programming language. Alongside HTML and CSS, JavaScript is one of the three core technologies of World Wide Web content production. It is used to make webpages interactive and provide online programs, including video games. The majority of websites employ it, and all modern web browsers support it without the need for plug-ins by means of a built-in JavaScript engine. Each of the many JavaScript engines represent a different implementation of JavaScript, all based on the ECMAScript specification, with some engines not supporting the spec fully, and with many engines supporting additional features beyond ECMA.
+    </p>
+
+
+    <script>
+        
+        var Links = {
+            setColor : function(color){
+                var alist = document.querySelector('a');
+                var i = 0;
+                while(i < alist.length){
+                    alist[i].style.color = color;
+                    i = i + 1;
+                }
+            }
+        }
+        var Body = {
+            setColor : function(color){
+                document.querySelector('body').style.color = color;
+                //document는 객체
+                //querySelector()는 메소드이다.
+            },
+            setBackgroundColor : function(color){
+                document.querySelector('body').style.backgroundColor = color;
+            }
+        }
+        function nightDayHandler(self){
+        var target = document.querySelector('body');
+        if(self.value === 'night'){
+            Body.setBackgroundColor('black');
+            Body.setColor('white');
+            self.value = 'day';
+
+            Links.setColor('white');
+        } else {
+            Body.setBackgroundColor('white');
+            Body.setColor('black');
+            self.value = 'night';
+
+            Links.setColor('blue');
+        }
+}
+        //함수가 코드가 많아지면 정리정돈하는 코드라면,
+        //객체는 함수와 변수가 많아지면 연관된 것들을 그룹핑하는 도구로 간단하게 생각하도록하자
+        //객체가 많아지면???어떻할 것인가??????
+        //→  가장 큰 정리정돈의 기능 : 파일로 정리정돈
+        //서로 연관된 코드들을 파일로 그룹핑하는 것이다.
+
+
+//라이브러리와 프레임워크 -> 다른 사람과 협력해서 사용하는 느낌
+        //다른 사람이 잘 만들어논 소프트웨를 부품으로 해서 빠르게 적용시켜 사용하는것
+        //소프트웨어의 사회성이라고 한다.
+        
+        //라이브러리 : 내가 만들고자하는 부품들을 잘 정리정돈 되어 있는 
+        //재사용하기 좋은 소프트웨어를 만든다. 내가 만들고 있는 프로그램의 부품을 가져오는 느낌
+
+        //프레임워크 : 우리가 만들고 자하는 것이 있을때 웹, 게임, 채팅 등 그것을 만들고자 할때
+        // 공통적인 것과 달라지는 것이 있는데
+        // 공통적인 것을 프레임워크를 사용하고 다른 점에는 조금씩 고쳐 사용하는 느낌
+        //처음부터 끝까지 만들지 않도록 하는 반 제품 적인 느낌(프레임안에 들어가서 작업하는 느낌)
+
+        //jQuery (라이브러리)
+
+    </script>
+</body>
+</html>

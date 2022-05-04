@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>객체의 반복문</title>
+</head>
+<body>
+    <h1>Object</h1>
+    <h2>Create</h2>
+    <h3>객체의 쓰기와 읽기</h3>
+
+    <script>
+        //객체의 내용을 모조리 가져와야하는 경우
+        //검색 : javascript object iterater로 검색
+
+        //객체 생성
+        var cowerkers = {
+            "programmer" : "egoing",
+            "designer" : "leezche"
+        }
+
+        //객체의 내용을 가져오기
+        document.write("programmer : " + cowerkers.programmer);
+        document.write("desiger : " + cowerkers.designer);
+
+        //객체에 내용 추가하기
+        cowerkers.bookkeeper = "duru";
+        document.write("bookkeeper : " + cowerkers.bookkeeper);
+        cowerkers["data scientist"] = "taeho";  //배열에서 정보를 가져올때와 마찬가지로 대괄호([])안에 문자열을 쓰면 띄어쓰기 사용가능하다.
+        document.write("data scientist : " + cowerkers["data scientist"]);
+    </script>
+
+
+    <h2>Iterate</h2>
+    <h3>객체와 반복문</h3>
+    <script>
+        //coserkers의 수만큼 중괄호({})가 실행되는데 key값이 하나하나 대조되면서 실행된다.
+        //객체의 데이터를 순회하는 방법
+        for(var key in cowerkers){
+            //cowerkers[key]인 경우 프로퍼티의 값을 가져올 수 있다.
+            document.write(key + ' : ' + cowerkers[key] + '<br>');
+
+        }
+    </script>
+
+
+    <h2>property & method</h2>
+    <h3>프로퍼티와 메소드</h3>
+    <script>
+        //객체에는 데이터 (숫자, 문자열, 함수)를 담을 수 있다.
+        cowerkers.showAll = function(){
+            for(var key in this){
+            //cowerkers[key]인 경우 프로퍼티의 값을 가져올 수 있다.
+            document.write(key + ' : ' + this[key] + '<br>');
+            } 
+        }
+        cowerkers.showAll();
+        //객체의 소속된 함수를 만들 수 있으며 이것을 메소드라고 하며
+        //객체의 소속된 변수를 프로퍼티라고 한다.
+    </script>
+</body>
+</html>
