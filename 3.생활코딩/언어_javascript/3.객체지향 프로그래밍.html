@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>객체지향 프로그래밍</title>
+</head>
+<body>
+    <script>
+        var grades = {
+            'list' : {'egoing' : 10, 'k8805' : 8, 'sorialgi' : 80},
+            //객체 안에 객체를 넣을 수 있다.
+            'show' : function(){
+                for(var name in this.list){
+                    console.log(name, this.list[name]);
+                }
+                console.log(this.list);
+            }
+            //값으로서의 함수는 객체 안에 저장될 수 있다!!!!!
+            //this는 함수를 가지로 있는 값은 객체가 소속되어 있는 객체를 의미힌다.
+
+        }
+        //객체 안에는 데이터가 있고
+        // 그 데이터를 사용하는 함수를 가지고 있을 수 있다.
+        //객체.함수();를 사용해 호출 할 수 있다.
+        //즉, grades는 list와 show를 카데고리화한 그릇으로 볼 수 있다
+        // 서로 연관되어 있는 데이터와 연관되어 있는 처리를 하나의 그릇 안에 모아서 그룹핑해서 만든 것을 
+        //객체 지향 프로그래밍이라고 한다.
+        
+
+        console.log(grades['list']);
+        //이때는 list안의 객체를 가르키게 된다. -> [object Object]
+        //list 안에 'egoing'의 값을 가르키게 하고 싶다면?
+        console.log(grades['list']['egoing']);
+        //함수를 불러 오고 싶다면
+        grades.show();
+
+        //this키워드 => 약속되어져 있는 변수
+
+    </script>
+</body>
+</html>

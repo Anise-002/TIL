@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>객체를 다루는 법</title>
+</head>
+<body>
+
+    <script>
+        //객체 안에는 순서가 없고 key와 value만 있다.
+        //for in (반복문)
+        //for(key in 객체){};
+        //객체의 key값만 하나씩 담겨진다.
+        var grades = {
+        'egoing' : 10,
+        'k8805' : 6,
+        'sorialgi' : 80
+        };
+        for(key in grades){
+            console.log(key);
+        }
+        //egoing    
+        //k8805
+        //sorialgi
+
+
+        //객체 안에서 저장되어 있는 값을 가져 올 수 있다.
+        for(key in grades){
+            console.log(grades[key]);
+        }
+        //10
+        //6
+        //80
+    </script>
+    <ul>
+        <script>
+
+            for(var name in grades){
+                document.write('<li>key : ' + name + 'value : ' + grades[name]+ '</li>');
+            }
+            //for in문을 통해 객체를 배열하였다.
+        </script>
+    </ul>
+
+</body>
+</html>

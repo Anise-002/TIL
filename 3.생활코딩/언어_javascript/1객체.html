@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>객체</title>
+</head>
+
+<body>
+
+    <script>
+        /*
+        배열은 연관되어 있는 것들을 담아내는 그릇이며 데이터를 담아내면 색인의 숫자 번호가 자동으로 넣어준다.
+        객체는 인덱스의 값으로 숫자를 사용하는 것이 아닌 문자나 숫자를 사용할 수 있는 차이점이 있다.
+        
+        */
+        var grades = {
+        'egoing' : 10,
+        'k8805' : 6,
+        'sorialgi' : 80
+        };
+        //하나의 객체를 정의했다.
+        //객체의 인덱스는 문자 'eging' , ;k8805' ,'sorialgi'
+        //데이터 : 10, 6, 80
+        //객체를 대표하는 변수에 담아내면 원할때 객체를 불러서 쓸 수 있다.
+        
+        var gradess = {};
+        gradess['egoing'] = 10;
+        gradess['k8805'] = 6;
+        gradess['sorialgi'] = 80;
+        //객체를 생성하는 다른 방법 2
+        
+        var gradess = new Object;
+        gradess['egoing'] = 10;
+        gradess['k8805'] = 6;
+        gradess['sorialgi'] = 80;
+        //객체를 생성하는 다른 방법 3
+        //{}와 new Object 같은 의미임으로 빈 객체를 생성할 수 있다.
+
+        //객체에 접근할때
+        //1. 
+        grades['egoing']; //10
+        //객체 시별자에 대괄호의 key이름을 넣어 접근한다.
+
+        //2.
+        grades.k8805; // = grades['k8805']; = gradess['k88' + '05']도 같은 값을 가져온다. 필요에 따라 [](대괄호)를 쓸 수 있다.
+
+
+        //자바스크립트의 객체는 데이터를 사용하는 그릇, 부품을 사용할 수 있는 로직이로 이해를 확장해 나아가야 한다.
+
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>옵션</title>
+</head>
+<body>
+    정규 표현식 패턴을 만들때 옵션을 설정할 수 있다.
+    옵션에 따라서 검출되는 데이터가 달라진다.
+
+    <h3>i</h3>
+    <p>i를 붙이면 대소문자를 구분하지 않는다.</p>
+    <script>
+        var xi = /a/;
+        console.log("Abcde".match(xi)); //null
+        var oi = /a/i;
+        console.log("Abcde".match(oi)); //["A"]
+        //원래는 a가 있다면 a를 추출해야하는데 i를 옵션으로 넣음으로서 대문자 A가 리턴된다.
+
+    </script>
+
+    <h3>g</h3>
+    <p>g를 붙이면 검색된 모든 결과를 리턴한다.</p>
+    <script>
+        var xg = /a/;
+        console.log("abcdea".match(xg)); //["a"]
+        //a가 2개가 있는데 출력 값은 하나만 출력되고 있다.
+        var og = /a/g;
+        console.log("abcdea".match(og)); //["a" "a"]
+        //a가 2개 있는데 2개 전부가 출력된다.
+    </script>
+    
+    <h3>i와 g는 같이 쓸 수 있다.</h3>
+    <script>
+        var ig = /a/ig;
+        //a를 찾는데 대문자 소문자를 구별하지 않고 모든 문자를 찾겠다는 뜻이다.
+        console.log("AabcdAa".match(ig)); //['A', 'a', 'A', 'a']
+        //대문자 소문자 상관없이 모든 a가 출력되었다.
+    </script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>치환</title>
+</head>
+<body>
+    <script>
+        var urlPattern = /\b(?:https?):\/\/[a-z0-9-+&@#\/%?=~_|!:,.;]*/gim;
+        //이 부분이 왜 url을 가져오게 하는지에 대해서는 
+        //따로 공부해서 가져오는 것이 좋다.
+        //지금 이시간에는 정규표현식이 무엇인지에 대해 알아가는 것을 목표로하고
+        // 공부가 더 필요하다면, 따로 공부하자.
+        var content = '생활코딩 : http://opentutorials.org/course/1 입니다. 네이버 : http://naver.com 입니다. ';
+        var result = content.replace(urlPattern, function(url){
+            return '<a href="'+url+'">'+url+'</a>';
+            //두번째 인자로 함수를 사용했다.
+        });
+        console.log(result);
+    </script>
+</body>
+</html>

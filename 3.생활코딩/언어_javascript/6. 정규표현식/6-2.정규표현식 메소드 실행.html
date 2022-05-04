@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>정규표현식 RegExp 객체의 사용</title>
+</head>
+<body>
+    <h1>정규표현식 메소드 실행</h1>
+    대상을 먼저 지정하고 대상에 대한 어떤 작업을 할 것인가 의 순서가 이상적이다.<br>
+    어떠한 정보를 추출할 때 정규표현식을 사용한다.<br><br>
+
+    <b>*****정규표현식을 통해 주요한 작업 :: 추출, 테스트, 치환</b><br>
+
+    <h3>1.exec()-> 추출</h3>
+    <p>찾고자하는 것을 찾으면 배열로 리턴하는 함수(메소드)</p>
+    <p>없다면 null이 나온다.</p>
+    <script>
+        var pattern = /a/;
+        //문자열 a를 찾고자 하는 의지가 pattern변수에 들어가 있는 의미이다.
+        //즉,a를 찾고자한다.
+        //정규표현식객체가 들어가있다.
+        pattern.exec('abcde');  //["a"]가 나온다.
+        //'abcde'에 'a'를 찾겠다라고 한다.
+        var pattern = '/a./';
+        //여기서 /a./안에 있는 .(점)은 '하나의 문자' 점이 오는 자리에 문자 하나가 있어야한다라는 뜻이며 점(.)앞에는 반드시 a가 있어야 한다.
+        pattern.exec('abcde'); //["ab"]
+        //a가 있으니 a뒤에 b문자와 함께 추출하게 되었다.
+        pattern.exe('bcdef'); //null
+        //우리가 찾고자하는 대상에 a가 없기 때문에 null을 return 하게 된다.
+
+    </script>
+
+
+    <h3>2. test()-> 정보의 존재 유무를 테스트한다.</h3>
+    <p>검색에 대상이 되는 첫번째 인자에 안에 우리가 찾고자하는 패턴이 있다면 불린값을 리턴한다.</p>
+    <p>있다면 true/ 없다면 false</p>
+
+</body>
+</html>
