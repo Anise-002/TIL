@@ -47,7 +47,7 @@ body[data-char = 'ragirl'] {
     height: 100vh;
     transform-style: preserve-3d;
     /* .world에 perspectiv를 줘야 자식요소까지 3d효과를 가질 수 있게 해주는 것 */
-    /* IE는 지원이 안됨/웹킷 기반 브라우저에 지원됨 */
+    /* EI는 지원이 안됨/웹킷 기반 브라우저에 지원됨 */
 }
 .house{
     width: 100vw;

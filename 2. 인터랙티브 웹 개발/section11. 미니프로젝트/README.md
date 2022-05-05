@@ -1,7 +1,7 @@
 # 미니프로젝트
 
 ## 프로젝트 기능
-1. 3D공간
+1. 3D공간 만들기(css)
 2. 스크롤 이벤트 - 3D 공간감 나타내기
 3. 마우스 이벤트 - 3D 공간 시점 움직이기
 4. 캐릭터 동적 생성
@@ -9,7 +9,100 @@
 6. 키보드 조작 - 캐릭터와 공간 조작
 7. 클릭 이벤트 - 공간의 색상변화와 캐릭터 바꾸기
 
-## 1.
+## 1. 3D공간 만들기 (CSS)
+### 1) 공간 자체를 3D로 만들기
+
+```css
+.world{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    perspective: 1000px;
+}
+```
+.word에 perspecive를 사용하고, position을 fixed로 설정(이렇게 하면 스크롤이 위아래로 움직이지 않는다.)하고 width와 height를 화면꽉차게 한다.
+
+```css
+.stage{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    transform-style: preserve-3d;
+}
+```
+`transform-style: preserve-3d;` 는 `.word`에서 설정한 3D효과를 잘 전달하기 
+위해서 설정해 두었다.
+ EI는 지원이 안됨/웹킷 기반 브라우저에 지원된다.(크롬, 모바일기반, 사파리 등)
+
+ <br>
+ <br>
+
+
+ ### 2) 공간의 옆벽 만들기
+
+<img src = "../image/3D%EA%B3%B5%EA%B0%84.jpeg" width="500vw" height = "500vw">
+
+ ```css
+.wall-left{
+    left: -500vw;
+    width: 1000vw;
+    background: #f8f8f8;
+    transform: rotateY(90deg);
+}
+```
+`transform: rotateY(90deg);`하면 센터를 중심으로 돌아갔다.
+옆으로 옮겨줘야 하는 `.wall-left`의 width의 반 길이 만큼 옆으로 옮겨져야 `.wall`의 옆에 붙어서 표현된다.
+
+#### 그럼? right는???
+
+```css
+.wall-right{
+    left: -500vw;
+    width: 1000vw;
+    background: #f8f8f8;
+    transform: rotateY(90deg) translateZ(100vw);
+    /* translateZ로 움직인 이유는 y축으로90도로 돌렸기 때문에 x축이 아니라 z축쪽으로 움직이고 wall의 너비 만큼만 움직여줘야 하기 때문에 wall의 너비 100vw만큼 움직여 주면 된다. */
+}
+```
+다른 방법으로는 
+
+<img src = "../image/3D-2.jpeg" width="450vw" height="450">
+
+```css
+.wall-left{
+    width: 1000vw;
+    background: #f8f8f8;
+    transform: rotateY(90deg) translateZ(-500vw);
+}
+.wall-right{
+    width: 1000vw;
+    background: #f8f8f8;
+    transform: rotateY(90deg) translateZ(-400vw);
+}
+```
+이 방법은 left를 사용하지 않고 translateZ를 이용해 이동한 것으로 y축으로 rotate한 상태에서 z축 -(마이너스)방향으로 left는 500vw(자신의 너비의 반)/ right는 -400vw(500vw-100vw(wall의 너비)의 값)을 이동하면 된다.
+
+ <br>
+ <br>
+
+### 3) 콘텐츠 벽에 공간감 주기
+```css
+.wall-front-a{transform: translateZ(300vw);}
+.wall-front-b{transform: translateZ(50vw);}
+.wall-front-c{transform: translateZ(-200vw);}
+.wall-front-d{transform: translateZ(-500vw);}
+/* translateZ에 490vw로 하면 화면 꽉차게 나온다. */
+```
+
+---
+ <br>
+ <br>
+ <br>
+
 ## 2.
 ## 3. 마우스 이벤트 - 3D 공간 시점 움직이기
 ### mousemove 이벤트
