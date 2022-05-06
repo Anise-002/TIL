@@ -45,7 +45,7 @@
 
  ### 2) 공간의 옆벽 만들기
 
-<img src = "../image/3D%EA%B3%B5%EA%B0%84.jpeg" >
+<img src = "../image/3D%EA%B3%B5%EA%B0%84.jpeg" width="700vw">
 
  ```css
 .wall-left{
@@ -71,7 +71,7 @@
 ```
 다른 방법으로는 
 
-<img src = "../image/3D-2.jpeg" >
+<img src = "../image/3D-2.jpeg" width="700vw">
 
 ```css
 .wall-left{
@@ -199,6 +199,9 @@ window.addEventListener('scroll', function(){
 + 이 값을 계산해서 우리가 쓰기 좋은 형태로 만들어줘야 한다.
 + 이 속성은 화면의 왼쪽 위의 값이 0에 수렴한다.
 + 우리가 원하는 효과는 마우스가 가운데에 있을때 회전이 안되어 있는 즉, 기준으로 위, 아래, 좌우가 균일하게 움직이길 원한다.
+
+<img src = "../image/%EC%A2%8C%ED%91%9C.jpeg" width = "700vw">
+
 + 하지만 cilentx, clinety값을 그대로 쓰기면 가운데에 마우스가 있을때 회전이 된 상태이고 회전각을 계산하기에 어려움이 있다.
 + 따라서 가운데의 값(0)를 기준으로 마이너스(-1), 플러스(+1)값을 이용해서 해서 많든다.
 ```javascript
