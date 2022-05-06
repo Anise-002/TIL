@@ -40,7 +40,6 @@
  EI는 지원이 안됨/웹킷 기반 브라우저에 지원된다.(크롬, 모바일기반, 사파리 등)
 
  <br>
- <br>
 
 
  ### 2) 공간의 옆벽 만들기
@@ -258,7 +257,10 @@ stageElem.style.transform = 'rotateX(' + mousePos.x + 'deg) rotateY(' + mousePos
 <br>
 
 ## 4. 3D 캐릭터 구현 
+각 부위별로 잘라서 이미지로 만든다.<br>
+css파트에 카드 만들기를 참고하자.
 ### HTML
+이 부분은 자바스크립트로 클릭했을때 동적 생성을 하기 떄문에 html파일에 직접 작성하지 않는다.
 ```html
 <div class="character">
             <div class="character-face-con character-head">
@@ -288,35 +290,205 @@ stageElem.style.transform = 'rotateX(' + mousePos.x + 'deg) rotateY(' + mousePos
 
         </div>
 ```
+각 부위 파트마다 앞, 뒤가 있고 그 것을 그룹해주는 div로 묶어주는 형태의 html구조이다.
++ `character-face-con` : character-face를 감싸고 있는 container라는 뜻
++ `character-face` : 캐릭터의 면(face)을 의미
++ `face-front` : 앞면을 의미
++ `face-back` : 뒷면을 의미
+
 ### CSS
+```css
+.character {
+    position: absolute;
+    left: 12%;
+    bottom: 5%;
+    width: 10vw;
+    height: 15.58vw;
+    /* 여기서는 가로 : 세로의 비율을 픽스하기 위해서 vw로 높이 단위로 했다. */
+    transform-style: preserve-3d;
+    /* 상위 엘리먼트의 3d효과가 하위에도 적용되기 위해서 사용하는 것. */
+}
+```
++ `width와 height의 비율을 vw단위`로 맞춰서(뷰포트의 크기에 따라 크기를 다르게 하되, 비율을 그대로 가져가기 위해서 사용);
+
+```css
+.character[data-direction='forward'] { transform: rotateY(180deg); } /*앞모습*/
+.character[data-direction='backward'] { transform: rotateY(0deg); } /*뒷모습*/
+.character[data-direction='left'] { transform: rotateY(-90deg); } /*왼쪽*/
+.character[data-direction='right'] { transform: rotateY(90deg); } /*오른쪽*/
+
+```
+ data-direction='forward'으로 바라보는 방향을 css로 설정해 놓은 것 
+ 상황에 맞춰서 [data-direction]값을 <u>방향을 결정</u>하는 것을 js로 지정하도록 미리 세팅한 값이다.
+
+```css
+.character-head {
+    left: calc(42 / 856 * 100%);
+    /* 이미지의 (left로 움직이고 싶은 길이/전체길이)의 비율을 퍼센트로 만들어서 넣어준 것*/
+    top: 0;
+    z-index: 60;
+    width: calc(770 / 856 * 100%);
+    /* (머리의 너비 / character 전체 길이)의 비율을 퍼센트로 만들었음 
+    calc 함수인 경우 계산하지 않아도 수식으로 남길 수 있어서 수정하기 용이하다.*/
+    /* 계산 값만 쓰게 된다면 수식을 주석으로 남겨 놓아 나중에 보기 좋게 해줘라. */
+    height: calc(648 / 1334 * 100%);
+    /* 놓이도 (머리 높이/character의 높이)의 비율을 calc함수고 계산 */
+    transform-origin: center bottom;
+    /* 이거 중요!!! transform의 기준의 center이라 목을 기준으로 움직이기 위해서 center bottom을 기준으로 설정했다. */
+    animation: ani-head 0.6s infinite alternate cubic-bezier(0.46, 0.18, 0.66, 0.93);
+}
+```
++ `calc()` : calc(칼크)함수는 연산값이 숫자면 괜찮다.
++ 계산해서 숫자를 넣어도 되는데 연산의 식을 넣으므로서 나중에 이해 할 수 있다. 
++ `left: calc(42 / 856 * 100%);` : clac(옮기기 위한 수치/ 전체 그림 너비 값 * 100%); 
+
+<br>
+
+### CSS Animation
+```css
+@keyframes ani-head {
+    to{transform: rotateX(-10deg);}
+    /* 적용하는 엘리멘트에 animation : alternate를 널어주면 자연스럽다. */
+}
+@keyframes ani-running-leg {
+    from{
+        transform: rotateX(-30deg);
+    }
+    to{
+        transform: rotateX(30deg);
+    }
+}
+@keyframes ani-running-arm{
+    from{
+        transform: rotateY(-30deg);
+    }
+    to{
+        transform: rotateY(30deg);
+    }
+}
+```
+
+
 ### JS
-1.생성자를 이용해 만들기
 
-2.클릭하면 그 위치에 캐릭터 생성하기
+#### 1. 생성자를 이용해 캐릭터를 만들기<bt>
+character.js파일에 캐릭터 생성자 함수를 만들다.
 
-3. 스크롤 했을때 캐릭터 움직이게 하기
-3-1.css에 runing클래스를 붙여 애니메이션 실행하기
+```javascript   
+    function Character(){
+        this.mainElem = document.createElement('div');
+        this.mainElem.classList.add('character');
+        this.mainElem.innerHTML =`
+        <div class="character-face-con character-head">
+                <div class="character-face character-head-face face-front"></div>
+                <div class="character-face character-head-face face-back"></div>
+            </div>
+            <div class="character-face-con character-torso">
+                <div class="character-face character-torso-face face-front"></div>
+                <div class="character-face character-torso-face face-back"></div>
+            </div>
+            <div class="character-face-con character-arm character-arm-right">
+                <div class="character-face character-arm-face face-front"></div>
+                <div class="character-face character-arm-face face-back"></div>
+            </div>
+            <div class="character-face-con character-arm character-arm-left">
+                <div class="character-face character-head-face face-front"></div>
+                <div class="character-face character-head-face face-back"></div>
+            </div>
+            <div class="character-face-con character-leg character-leg-right">
+                <div class="character-face character-head-face face-front"></div>
+                <div class="character-face character-head-face face-back"></div>
+            </div>
+            <div class="character-face-con character-leg character-leg-left">
+                <div class="character-face character-head-face face-front"></div>
+                <div class="character-face character-head-face face-back"></div>
+            </div>`;
+
+            document.querySelector('.stage').appendChild(this.mainElem);
+    }
+```
+코드 해석
+
++ 생성자 함수이니까 식별자의 첫 글자는 대문자로 만들어준다.
++ <div>를 가지고 있는 `mainElem`을 만들고,  거기에 클래스 `.character`도 붙여준다. 
++ `mainElem`안에 캐릭터의 html구조 코드를 넣어준다.
++ 이 것을 appendChild를 이용해 `stage`안 마지막 부분에 밀어 넣어준다.
+
+#### 2) 생성자 함수의 인스턴스를 만들어 호출시켜준다.
+생성자 함수 안에는 작성한 코드가 실행되는 코드가 없기 때문에 화면상에 나오지 않는다. 그래서 화면에 캐릭터를 나타나게 할려면 `인스턴스`를 통해 생성자함수가 만들어낸 캐릭터는 화면에 호출시킨다.
+`new키워드`를 사용해서 생성자를 붙여논다.
+
+```javascript
+new Character();
+
+```
+이때 나타나는 캐릭터의 위치는 `left : 12%`자리에 나타나도록 .character에 css에서 설정해 놓아서 캐릭터의 위치는 고정으로 그 자리에 나타난다.
+
+#### 3) 클릭한 곳에 캐릭터 생성하기
+
+하지만, 클릭을 한 자리에 나타나도록 해야하기 떄문에
+'click이벤트`와 e(이벤트 객체)의 속성인 `clientX`의 값을 사용한다.
+
+```javascript
+window.addEventListener('click',function(e){
+    new Character();
+})
+
+```
+전체너비에서 클릭한 위치의 비율의 퍼센트를 구해 .character의 left값을 넣어주면 클릭한 위치에 인스턴스가 생성될 수 있다.
+```javascript
+e.clientX/window.innerWidth *100
+```
+이 식을 바로 매개변수에 넣어주는 것이 아니라 인스턴스의 매개변수를 객체로 만들어서 넣어준다.
+```javascript
+window.addEventListener('click',function(e){
+    new Character({
+        xPos : e.clientX/window.innerWidth *100
+    });
+})
+```
+이렇게 만들면 생성자함수 Character(info)의 매개변수(info)의 값에 xPos의 값이 들어가게 된다. 이 info의 값을 사용해서 생성자 함수 Character안에서 새롭게 만들어지는 캐릭터를 둘러싼 엘리먼트인 `mainElem`의 left값으로 넣어주면 된다.
+
+```javascript   
+    function Character(){
+        this.mainElem = document.createElement('div');
+        this.mainElem.classList.add('character');
+        this.mainElem.innerHTML =`
+        <div class="character-face-con character-head">
+                ....
+        </div>`;
+
+        document.querySelector('.stage').appendChild(this.mainElem);
+
+        this.mainElem.style.left = info.xPos + '%';
+    }
+```
+`this.mainElem.style.left = info.xPos + '%';` : info가 객체이니까 객체 안의 xPos의 값을 가져오려고 `info.xPos`를 넣고 단위(%)를 넣어주었다.
+
+
+#### 4. 스크롤 했을때 캐릭터 움직이게 하기
+4-1.css에 runing클래스를 붙여 애니메이션 실행하기
 ```css
 .character.running .character-leg-right { animation: ani-running-leg 0.2s alternate infinite linear; }
 .character.running .character-leg-left { animation: ani-running-leg 0.2s alternate-reverse infinite linear; }
 .character.running .character-arm { animation: ani-running-arm 0.2s alternate infinite linear; }
 ```
-3-2. runnig클래스 붙이기
+4-2. runnig클래스 붙이기
 
-3-3. 스크롤이 멈추면 running클래스 제거해 움직임 멈추기
+4-3. 스크롤이 멈추면 running클래스 제거해 움직임 멈추기
 
-3-4. 캐릭터 뒤통수 보이게 하기
+4-4. 캐릭터 뒤통수 보이게 하기
 
-4. 캐릭터 키보드로 좌우로 움직이게 하기
+5. 캐릭터 키보드로 좌우로 움직이게 하기
 
 ※ 참고) keycode.info ->키보드 코드를 알려주는 웹사이트 
 
-4.1 keydown 이벤트, keyup 이벤트
+5.1 keydown 이벤트, keyup 이벤트
 
-4.2 좌우로 이동하는 것 (속도도 다르게 한다.)
+5.2 좌우로 이동하는 것 (속도도 다르게 한다.)
 requestAnimationFrame을 활용.
 
-5. 속도를 랜덤으로 만들기
+6. 속도를 랜덤으로 만들기
 
 
 
