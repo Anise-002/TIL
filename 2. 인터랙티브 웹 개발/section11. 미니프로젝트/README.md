@@ -450,7 +450,7 @@ window.addEventListener('click',function(e){
 이렇게 만들면 생성자함수 Character(info)의 매개변수(info)의 값에 xPos의 값이 들어가게 된다. 이 info의 값을 사용해서 생성자 함수 Character안에서 새롭게 만들어지는 캐릭터를 둘러싼 엘리먼트인 `mainElem`의 left값으로 넣어주면 된다.
 
 ```javascript   
-    function Character(){
+    function Character(info){
         this.mainElem = document.createElement('div');
         this.mainElem.classList.add('character');
         this.mainElem.innerHTML =`
@@ -465,19 +465,142 @@ window.addEventListener('click',function(e){
 ```
 `this.mainElem.style.left = info.xPos + '%';` : info가 객체이니까 객체 안의 xPos의 값을 가져오려고 `info.xPos`를 넣고 단위(%)를 넣어주었다.
 
+<br>
 
 #### 4. 스크롤 했을때 캐릭터 움직이게 하기
-4-1.css에 runing클래스를 붙여 애니메이션 실행하기
+
+**4-1). 스크롤 일어날때 팔, 다리 움직이게 하기**
+css에 runing클래스를 붙여 애니메이션 실행하기
 ```css
 .character.running .character-leg-right { animation: ani-running-leg 0.2s alternate infinite linear; }
 .character.running .character-leg-left { animation: ani-running-leg 0.2s alternate-reverse infinite linear; }
 .character.running .character-arm { animation: ani-running-arm 0.2s alternate infinite linear; }
+
+@keyframes ani-running-leg {
+    from{
+        transform: rotateX(-30deg);
+    }
+    to{
+        transform: rotateX(30deg);
+    }
+}
+@keyframes ani-running-arm{
+    from{
+        transform: rotateY(-30deg);
+    }
+    to{
+        transform: rotateY(30deg);
+    }
+}
+
 ```
-4-2. runnig클래스 붙이기
+**4-2). 스크롤이 될때 runnig클래스 붙이기**
+- 캐릭터 생성자에 객체를 가지도록 한다.
+- 러닝클래스를 상황에 따라 넣고 빼고 하는 것은 동작인 메서드인데
+인스턴스들이 공통으로 가지는 공통 메서드는 protptype객체로 생성한다.
 
-4-3. 스크롤이 멈추면 running클래스 제거해 움직임 멈추기
+참고)
+>원래 존재하는 객체에 프로토타입을 추가하는 방법
+>```javascript
+ > Character.prototype.xxxx =function(){};
+>```
+>프로토타입을 재설정하는 방법( 프로토타입을 묶어서 정리하고자 할때는)
+>```javascript
+>Character.prototype = {
+>    constructor :Character;
+>    xxxxx : function(){};
+>}
+>```
 
-4-4. 캐릭터 뒤통수 보이게 하기
+```javascript
+Character.prototype = {
+    constructor : Character;
+    init : function(){
+        window.addEventListener('scroll',function(){
+            this.mainElem.ClassList.add('running');
+        })
+    };
+
+}
+
+```
+`init()`은 프로토타입의 초기값을 설정하는 함수이다.<br>
+`init()`함수에 스크롤 이벤트를 넣어줘서 캐릭터가 생성된 다음에 스크롤이 일어나면 애니메이션 클래스가 붙어 애니메이션이 나오게 한다.
++ Character 생성자 함수 않아 `this.init()`으로 함수를 호출해준다.
+
+그런데 이렇게 하면 Error가 나온다.<br>
+그 이유는 스크롤 이벤트 안의 콜백 함수 실행 내용이 ` this.mainElem.ClassList.add('running');`인데 여기서 `this`는 전역객체(window)를 가리킨다.
+
+왜 전역 객체를 가리킬까????<br>
+그 이유는 this는 자신을 호출한 객체에 this를 바인딩하는데 코드에서 이벤트를 실행시키고 호출시킨 주체 객체는 window이기 때문에 this가 window가 된다.
+
+어떻게 this를 생성자함수 Character를 가르키게 하는 방법은??<br>
+Character를 가르키는 this를 변수에 할당해서 그 변수를 이용하면 된다.
+```javascript
+Character.prototype = {
+    constructor : Character;
+    console.log(this);  //Character
+
+    const self = this;
+
+    init : function(){
+        window.addEventListener('scroll',function(){
+            self.mainElem.ClassList.add('running');
+        })
+    };
+
+}
+```
+`const self = this;`는 `Character`를 가르키기 때문에 `this.mainElem`을 `self.mainElem`을 사용한다.
+
+**4-3) 스크롤이 멈추면 running클래스 제거해 움직임 멈추기**
+```javascript
+function Character(info){
+    ....
+    this.scrollState = false;
+}
+```
++ `this.scrollState = false;`는 스크롤이 되어 있는지 않되는지 체크하는 변수이다. (변수에 값을 넣지 않은면 자동으로 undefined가 되는데 이걸 사용해도 됨)
+
+```javascript
+Character.prototype = {
+    constructor : Character;
+    console.log(this);  //Character
+
+    const self = this;
+
+    init : function(){
+        window.addEventListener('scroll',function(){
+            clearTimeout(self.scrollState);
+
+            if(!self.scrollState){
+                self.mainElem.ClassList.add('running');
+            }
+            
+            self.scrollState = setTimeOut(function(){
+                self.scrollState = false;
+                self.scrollState.classList.remove('running');
+            },500);
+        })
+    };
+
+}
+```
++ if문의 조건인 `!self.scrollState`이 true값이여야 if문 {}블록의 실행문이 실행된다. 따라서 false가 !연산자를 만나 true가 되서 캐릭터에 움직이는 애니메이션을 가지고 있는 .running클래스가 추가 된다.
+
++ 하지만, if문의 실행은 스크롤이 될때마다 실행되기 떄문에 비효율적이다.
+
++ `setTimeOut()`이 실행되는 순간에 숫자를 리턴해준다. 그렇다면 if문에서의 조건이 (!숫자값)이니까 숫자값은 true를 갖는다. 따라서 if문의 조건은 (!true) 즉 false가 됨으로 if문이 실행되지 않는데, 0.5 동안(setTimeOut 안이 실행되기 전까지의 시간을 의미한다) 적용된다. 그러다가 0.5 후(setTimeOut안의 실행문이 실행되는 시간을 의미)에 `self.scrollState = false;`로 인해 false값을 가지고 있으니까, 그 순간부터 if문이 실행이 되서 애니메이션이 적용된다.<br>
+-> 이렇게 하면 캐릭터가 스크롤을 멈추면 움직이지 않는다. 하지만, 부자연스럽게 움직이다.
+이것은 `running`클래스가 스크롤할때마다 붙였졌다 지워졌다는 반복하기 때문에 부자연스럽게 움직이는 것이다.
+
++ `clearTimeout(self.scrollState);` : 스크롤하자마자 `setTimeOut()`을 실행하지 못하게 한다. scroll이벤트 앞에 위치한 이유는 스크롤을 연속으로 할때마다 `clearTimeOut`이 실행되면서 `setTimeOut()`이 0.5초 후에 실행되어야 하는데 실행되는 시간을 주지 않음으로서 실행문인 애니메이션 클래스(. running)를 제거하는 것을 막기 위함이다. <br>
+따라서, 스크롤 하는 중에는 계속해서 클리어되서 setTimeOut()이 실행이 안되다가 스크롤이 멈춘 시점에 그제서야 마지막 setTimeOut이 0.5초 후에 실행이 되는 것이다.
+
+> <u>이렇게 하면 계속적으로 반복되는 메카니즘을 효율적으로 딱 한번 실행하도록 한다.</u>
+<br>
+
+**4-4. 캐릭터 뒤통수 보이게 하기**
 
 5. 캐릭터 키보드로 좌우로 움직이게 하기
 
