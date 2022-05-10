@@ -598,20 +598,353 @@ Character.prototype = {
 따라서, 스크롤 하는 중에는 계속해서 클리어되서 setTimeOut()이 실행이 안되다가 스크롤이 멈춘 시점에 그제서야 마지막 setTimeOut이 0.5초 후에 실행이 되는 것이다.
 
 > <u>이렇게 하면 계속적으로 반복되는 메카니즘을 효율적으로 딱 한번 실행하도록 한다.</u>
+
 <br>
 
-**4-4. 캐릭터 뒤통수 보이게 하기**
+**4-4) 캐릭터 뒤통수 보이게 하기**
 
-5. 캐릭터 키보드로 좌우로 움직이게 하기
+앞으로 가고 뒤로 가는 것을 어떻게 판별할까??<br>
+우리가 사용하는 것은 스크롤이기때문에
+스크롤 된 위치가 어디인지 판단해서 현재의 위치보다 작으면 스크롤을 내렸다고 판단 크면 스크롤을 올렸다고 판단했다고 코딩하면 된다.
 
-※ 참고) keycode.info ->키보드 코드를 알려주는 웹사이트 
++ `pageYOffset`을 이용한다.
+pageYOffset값을 변수(`lastScrollTop` , `A`)에 저장하면 계속해서 업데이트가 되면서 마지막 스크롤 된 값을 얻을 수 있다.
+  + A보다 작다 = 스크롤을 위로 올렸다 = 화면이 뒤로 빠구했다. = `캐릭터의 얼굴`이 보여야 한다.
+  + A보다 크다 = 스크롤을 아래로 내렸다. = 화면이 앞으로 진행된다. = `캐릭터의 뒤통수`가 보여야 한다.
+``` javascript
+if(self.lastScrollTop > pageYOffset){
+    //이전 스크롤 위치가 현재 스크롤 보다 크다 = 스크롤을 올림
+    //back
+    self.mainElem.setAttribute('data-direction', 'backward');
+}else{
+    //이전 스크롤 위치가 현재 스크롤 보다 작다 = 스크롤 내림
+    //forward
+    self.mainElem.setAttribute('data-direction', 'forward');
+}
 
-5.1 keydown 이벤트, keyup 이벤트
+self.lastScrollTop = pageYOffset;
+//마지막의 스크롤 값을 가져와야 하기때문에 아래에 값을 할당해 갱신해 준다.
+```
 
-5.2 좌우로 이동하는 것 (속도도 다르게 한다.)
-requestAnimationFrame을 활용.
+#### 5. 캐릭터 키보드로 좌우로 움직이게 하기
+5-1) **keydown 이벤트, keyup 이벤트**
 
-6. 속도를 랜덤으로 만들기
+css의[data-direction] 속성으로 설정해주었음
+이떄는 스크롤이 아니라 키보드 이벤트를 이용해 css 속성을 변경해주면 된다.
+키보드 바향키를 눌렀을때 캐릭터의 방향을 바꿔주도록 하겠다.
+```javascript
+window.addEventListner('keydown', function(e){
+    console.log(e.keyCode);
+});
+```
++ 이벤트 keydown 속성 중에 keyCode속성이 있다. 키보드가 가지고 있는 고유의 값을 가지고 캐릭터를 제어해준다.<br>
+※ 참고) [키보드 코드를 알려주는 웹사이트](keycode.info) 
+  + 왼쪽 : 37
+  + 오른쪽 : 39
+
+```javascript
+window.addEventListner('keydown', function(e){
+    console.log(e.keyCode);
+    if(e.keyCode == 37){
+        //왼쪽 방향키
+        self.mainElem.setAttribute('data-direction', 'left');
+    }else if(e.keyCode == 39){
+        //오른쪽 방향키
+        self.mainElem.setAttribute('data-direction', 'right');
+    }
+});
+```
+이제는 방향키를 누르면 걸어가도록 만들어야 한다.<br>
+걸어가는 동작을 넣어줄려면 `.running`이 있어야 한다.
+```javascript
+window.addEventListner('keydown', function(e){
+    console.log(e.keyCode);
+    if(e.keyCode == 37){
+        //왼쪽 방향키
+        self.mainElem.setAttribute('data-direction', 'left');
+        self.mainElem.classList.add('running');
+    }else if(e.keyCode == 39){
+        //오른쪽 방향키
+        self.mainElem.setAttribute('data-direction', 'right');
+        self.mainElem.classList.add('running');
+    }
+});
+```
+이렇게 하면 방향키를 누리지 않아도 계속해서 걷는 애니메이션이 적용된다.
+이럴때에는 runing클래스를 제거해야 한다.
+```javascript
+//키를 뗐을때 => keyup
+window.addEventListener('keyup', function(e){
+    self.mainElem.classList.remove('running');
+});
+```
+다음은 좌우로 이동하는 것을 추가한다.<br>
+속도를 가지도록 해야 한다. 스피드 속성을 세팅해준다.
+```javascript
+ function Character(info){
+this.speed = 5;
+ }
+
+```
+각 캐릭터의 위치를 결정해주는데 left이 결정해준다.
+지금 캐릭터에서 left값을 결정해주는 것은 info의xPos값이다.<br>
+이동하는것은 info의 xPos값을 갱신해서 left 값을 바꿔 위치를 움직이도록 한다.<br>
+info의 xPos의 값을 `Character`의 속성 값으로 만들어서 접근도 하고 새로운 값을 갱신 할 수 있게 준비한다.
+```javascript
+ function Character(info){
+this.speed = 0.3;
+this.xPos = info.xPos;
+ };
+window.addEventListner('keydown', function(e){
+    console.log(e.keyCode);
+    if(e.keyCode == 37){
+        //왼쪽 방향키
+        self.mainElem.setAttribute('data-direction', 'left');
+        self.mainElem.classList.add('running');
+        self.xPos -= self.speed;
+        // self.xPos =  self.xPos- self.speed;
+        //스피드만큼 현재의 위치를 빼준다.
+        self.mainElem.style.left = self.xPos + '%';
+        
+    }else if(e.keyCode == 39){
+        //오른쪽 방향키
+        self.mainElem.setAttribute('data-direction', 'right');
+        self.mainElem.classList.add('running');
+    }
+});
+
+```
+스피드 값만큼 현재의 위치를 뺴주면 갱신된 값을 넣어준다.
+```javascript
+    self.mainElem.style.left = self.xPos + '%';
+```
+근데 버벅 거린다.
+현재 keydown이벤트를 의존해서 값이 갱신되고 있는데 keydown이벤트는 자연스럽게 표현될 수 있을 정도로 많이 이벤트가 발생하지 않는다.(1초당 10프레임정도 발생한다.=> 버벅 거린다.)
+영상(영화 24프레임정도)이니까 최소한의 그정의 프레임을 가지고 만들어야 한다.
+
+5-2) **`requestAnimationFrame`을 활용.**
+
+property안에 메서드로 추가한다.
+그리고 방향을 알아보기 위해  생성자 Character함수에 this.direction 속성을 추가한다.
++ 방향키를 눌렀을때 direction이 left와 right가 될 수 있게 코드를 작성해준다.
+```javascript
+ function Character(info){
+this.speed = 0.3;
+this.xPos = info.xPos;
+this.direction;
+ };
+window.addEventListner('keydown', function(e){
+    console.log(e.keyCode);
+    if(e.keyCode == 37){
+        //왼쪽 방향키
+        self.direction = 'left';
+        self.mainElem.setAttribute('data-direction', 'left');
+        self.mainElem.classList.add('running');
+        // self.xPos -= self.speed;
+        // self.xPos =  self.xPos- self.speed;
+        //스피드만큼 현재의 위치를 빼준다.
+        // self.mainElem.style.left = self.xPos + '%';
+        
+    }else if(e.keyCode == 39){
+        //오른쪽 방향키
+        self.direction = 'right';
+        self.mainElem.setAttribute('data-direction', 'right');
+        self.mainElem.classList.add('running');
+    }
+});
+```
+키보드 이벤트에 `self.direction`방향을 넣어주어 run메서드의 조건문에 조건식이 될 수 있도록 해준다.
+
+```javascript
+run : function(){
+    const self = this;
+
+    if(self.direction == 'left'){
+        self.xPos -= self.speed;
+    }else if(self.direction == 'right'){
+        self.xPos += self.speed;
+    };
+
+    self.mainElem.style.left = self.xPos + '%';
+
+    requestAnimationFrame(self.run);
+}
+```
+run메서드에 `requestAnimationFrame`을 재귀 호출해서 반복하도록 하게 한다.
+그리고 방향키를 눌렀을때 run 메서드가 호출될 수 있도록 한다.
+```javascript
+window.addEventListner('keydown', function(e){
+    console.log(e.keyCode);
+    if(e.keyCode == 37){
+        //왼쪽 방향키
+        self.direction = 'left';
+        self.mainElem.setAttribute('data-direction', 'left');
+        self.mainElem.classList.add('running');
+
+        self.run();
+        //메서드 호출
+        
+    }else if(e.keyCode == 39){
+        //오른쪽 방향키
+        self.direction = 'right';
+        self.mainElem.setAttribute('data-direction', 'right');
+        self.mainElem.classList.add('running');
+
+        self.run();
+        //메서드 호출
+    }
+});
+```
+이렇게 하면 에러가 난다.
+자바스크립트의 함수는 호출하는 객체를 this로 받기 떄문에 지금 코드에서는 호출하고 있는 것은 self처음에는 self이지만, `requestAnimationFrame`을 통해 run함수가 다시 불려지면서 this는 `requestAnimationFrame`이 this가 되면서 전역 객체인 window가 this로 바인딩 되었다.
+
+1. 함수의 매개변수로 전달해서 this를 살리는 방법
+2. bind 메서드로 this를 직접 지정하기
+> bind()는 호출방법과 관계없이 특정 this값으로 호출되는 함수를 만든다.
++ bind()의 첫번째 인자 값을 this값에 고정시켜 this값이 변하지 않도록 해준다.
+```javascript
+run : function(self){
+        const self = this;
+        ....
+        ....
+        self.rafId = requestAnimationFrame(self.run.bind(self));
+        }
+    }
+```
+그런데 극단적으로 빨라지고 사라진다.....
+
+
+5-3) **좌우로 이동하는 것 (속도도 다르게 한다.)**
+키를 여러번 누르면 `requestAnimationFrame`이 중첩으로 이용되서 속도가 가속된다.
+
+이 문제를 없애기 위해서 키를 누르는 동안에 키를 누르는 함수가 여러분 호출되지 않도록 해줘야 한다.
+그것을 위해 속성을 추가하나.
+```javascript
+//좌우 이동 중인지 아닌지 판별하는 속성
+this.runningState = false;
+```
+즉 `runningStat`가 true라면 함수를 return(종료)시켜서 여러번 일어나지 않도록 한다.
+```javascript
+window.addEventListner('keydown', function(e){
+    if(self.runningState) return;
+
+    console.log('키다운');
+    if(e.keyCode == 37){
+        //왼쪽 방향키
+        self.direction = 'left';
+        self.mainElem.setAttribute('data-direction', 'left');
+        self.mainElem.classList.add('running');
+
+        self.run();
+        //메서드 호출
+        self.runningState = true;
+        //이렇게 되면, 키 다운이벤트가 여러번 나타나지 않고 
+        //한번만 실행되어 중첩되지 않아 속도가 빨라지지 않는다.
+        
+    }else if(e.keyCode == 39){
+        //오른쪽 방향키
+        self.direction = 'right';
+        self.mainElem.setAttribute('data-direction', 'right');
+        self.mainElem.classList.add('running');
+
+        self.run();
+        //메서드 호출
+        self.runningState = true;
+    }
+});
+```
+방향키를 뗐는데도 캐릭터의 위치가 변화하기 떄문에
+keyup 이벤트를 통해 움직잊 않도록 설정해준다.
+  + 왜 애니메이션이나 방향은 한번만 실행하는데 그대로인가?
+   <br>: 코드를 잘 살펴보면, 클래스를 제거하지도 않았고, 데이터 속성도 변경되지 않았기 때문에 그대로 진행되는 것이다. 여러번 중첩되어도 내용은 그대로이니 크게 변화가 없지만 `requestAnimationFrame`같은 경우에는 키를 누를 때무다 계속해서 호출되기 떄문에 애니메이션이 빠라지는 것이다.  
+
+위치를 움직이지 않기 위해서 `requestAnimationFrame`을 취소하도록 하면 된다.
+`requestAnimationFrame`는 숫자를 리턴하기 때문에 그것을 이용해서 `requestAnimationFrame`을 `cancelAnimationFram`을 이용해취소할 수 있다.
+
++ `requestAnimationFrame`이 리턴하는 값을 저장하는 변수를 만들어준다
+```javascript
+this.rafId;
+```
+그리고 `requestAnimationFrame(function(){self.run(self));});`를 값으로 저장해준다.
+```javascript
+self.rafId = requestAnimationFrame(function(){
+            self.run(self);
+```
+
+```javascript
+//키를 뗐을때 => keyup
+window.addEventListener('keyup', function(e){
+    self.mainElem.classList.remove('running');
+    cancelAnimationFrame(self.rafId);
+});
+```
+키를 떼고 다시 누르면 실행이 안된다.
+다시 눌렀을때, `runningState`가 계속해서 `true`이기 때문에 키를 눌러도 keydown이벤트가 return되기 때문에 아래의 코드가 실행되지 않아서 동작하지 않게 되었다.<br>
+따라서
+```javascript
+//키를 뗐을때 => keyup
+window.addEventListener('keyup', function(e){
+    self.mainElem.classList.remove('running');
+    cancelAnimationFrame(self.rafId);
+    self.runningState = false;
+    //초기화 시켜준다.
+});
+```
+그러면 다시 키보드를 누를때 잘 움직이다. 
+
+그런데...
+벽을 뚥고 나간다.
+xPos값을 if문을 이용해 조절해준다.
 
 
 
+다음은 좌우로 이동하는 것을 추가한다.<br>
+속도를 가지도록 해야 한다. 스피드 속성을 세팅해준다.
+```javascript
+ function Character(info){
+this.speed = 5;
+ }
+
+```
+
+
+
+#### 6. 속도를 랜덤으로 만들기
+처음에 생성할때 스피드를 랜덤하게 들어갈 수 있도록 한다.
+this.speed의 값을 생성할떄 랜덤하게 한다.
+```javascript
+this.speed = info.speed;
+```
+로 지정하고,
+stageElem의 클릭 이벤트를 할때 인스턴스가 만들어지도록 할떄 그떄 스피드를 각각 다른 값을 가진 인스턴스를 가지도록 생성자의 매개변수 객체에  speed를 넣어준다.
+
+```javascript
+  stageElem.addEventListener('click', function(e){
+        console.log(e.clientX/window.innerWidth * 100);
+        
+        new Character({
+            xPos : e.clientX/window.innerWidth * 100,
+            speed : Math.random();
+        });
+```
++ random()은 0부터 1사이의 랜던한 값을 뿌려준다.
++ 속도를 제한하고 싶다면 `* 0.5 `을 해주고 여러 수식을 넣어서 조절해준다.
+
+
+<br>
+
+#### 7. 테마 & 캐릭터 바꾸기
+css코드 중에 body [data-char = 'ragirl']의 body의 색상, ragirl일때의 character의 이미지 를 설정해 둔다.
+
+캐릭터를 클릭했을때 클릭한 곳의 data-char의 값을 body의 attribute가 바뀔 수 있도록 한다.
+
+```javascript
+    const selectCharacterElem = document.querySelector('.select-character');
+
+selectCharacterElem.addEventListener('click',function(e){
+        const value = e.target.getAttribute('data-char');
+        document.body.setAttribute('data-char', value);
+        
+    });
+```
+이렇게 하면 끝!ㅎ
