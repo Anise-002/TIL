@@ -12,6 +12,7 @@
 + `console`에는 자바스크립트를 쓸 수 있다.
 
 ### 2. [Repl.it 사용 안내](https://nomadcoders.co/faq/challenge/replit)
+
 <br>
 <br>
 <br>
@@ -205,4 +206,173 @@ console.log(player);
 
 ```
 
+<br>
+<br>
+<br>
 
+## 3일차
+### 1. Function
+
+가능한 적은 코드로 프로그래밍해야 한다.<br>
+function은 코드를 캡슐화해서 반복적인 일에 사용할 수 있다.
+> function 함수이름(){실행코드};
+
++ 함수를 반복해서 호출할 수 있다. 함수는 플레이 버튼과 비슷한 역활을 가진다.
+```javascript
+function sayHello(){
+  console.log("Hello");
+}
+
+sayHello();
+sayHello();
+sayHello();
+
+```
+이렇게 하면 호출을 열러번하면 함수를 여러번 실행할 수 있다.
+
+### 2. argument
+또한 여러가지 일을 함수를 통해 가능하도록 만들기 위함이다.
+
+ ##### 함수에 데이터 보내기(send)
+ + `argumnent`(인수)  : function을 실행하는 동안 어떤 정보를 function에게 보낼 수 있는 방법
+ 테이터를 보내는 방법=> `()`안에 데이터를 넣어주면 된다.
+
+ ```javascript
+sayHello("nico");
+sayHello("dal");
+sayHello("lyn);
+```
+이 경우 sayHello()함수에 데이터(어떠한 정보- "nico", "dia", "lyn")를 넣어주고 있다.
+
+#### 함수에서 데이터를 받고 활용하기(receive)
+
+```javascript
+function sayHello(nameOfPerson){
+  console.log(nameOfPerson);
+}
+
+sayHello("nico");
+sayHello("dal");
+sayHello("lyn");
+```
+함수 괄호()안에 argument에 varialble이름을 적어주고 실행 코드블록에 variable이름을 적어주면 데이터를 받아 활용 할 수 있다.
+
++ argument는 여러개 쓸 수 있다.<br>
+그리고 argument는 function안의 body에서만 존재한다.
+```javascript
+function sayHello(nameOfPerson, age){
+  console.log("Hello my name is " + nameOfPerson + "and I'm " + age);
+}
+
+sayHello("nico", 20);
+sayHello("dal", 22);
+sayHello("lyn",233);
+```
++ argument의 순서를 주의하자
+```javascript
+function plus(a,b){
+    console.log(a + b);
+};
+
+plus();     //NaN
+plus(8 , 60);
+```
+  + 만약 a 자리에 60이 들어가길 원한다면, plus(60, 8)로 작성해야 한다.
+  + 그리고 이 예제에서 출력을 위해 argument가 필요한데 argument를 사용하지 않은 경우에는 NaN(Not a Number)가 나타난다.
+
++ 객체 안에 argument사용하기
+```javascript
+
+const player = {
+    name : "nico",
+    sayHello : function(otehrPersonName){
+        console.log("hello! " + otehrPersonName + "nicd meet you")
+    }
+}
+console.log(player.name);
+player.sayHello("lyn");
+player.sayHello("nico");
+
+```
+#### 복습 - 계산기 객체 만들기
+```javascript
+const calculator = {
+    plus : function(a,b){
+        console.log(a + b);
+    },
+    minus : function(a,b){
+        console.log( a -b);
+    },
+    divide :  function(a, b){
+        console.log(a/b);
+    },
+    times : function(a, b){
+        console.log(a*b);
+    },
+    power : function(a,b){
+      console.log(a ** b);
+    }
+}
+calculator.plus(1,2);
+calculator.minus(1,2);
+calculator.divide(1,2);
+calculator.times(1,2);
+calculator.power(1,2);
+
+
+```
+<br>
+
+### Return
+계속해서 console.log를 이용해서 데이터를 출력했는데
+console.log를 데이터를 활용하기에는 어려움이 있다.
+
+어디에 값을 가지고 있거나, 저장, 또는 다른 값에 전달, 화면에 출력하기 위해서는 다르것을 사용하는 것을 좋다.
+
+> 함수가 작동하고 그 결과를 코드로 받을 수 있다.
+> function이 function의 밖과 소통하는 방법이다.
+> function을 실행했을떄, 무언가를 실행하고 끝났을때 값을 반환해준다.
+
+```javascript
+console.log(calculator.plus(1,2););
+//undefined
+```
+이 경우에 undefined가 나타난다. 함수의 코드 데이터가 있지 않고 출력만 했기 때문에 안에 있는 내용이 없다고 하는 것이다.
+
+이떄 return을 사용해 함수의 값을 코드로 반환해 변수에 저장할 수 있다.
+
+```javascript
+const age = 96;
+function calculateKrAge(ageOffForeigner){
+    return ageOffForeigner + 2;
+}
+const KrAge = calculateKrAge(age);
+console.log(KrAge); //96
+```
+console과 return과 차이점이 있다. 
+console은 출력만하고 출력된 값을 가져다 쓸 수 없지만, return은 출력은 되지 않지만 함수가 실행한 값을 가지고 코드내에서 값을 가져다 사용할 수 있는 점에서 큰 차이점을 가진다.
+
+<br>
+<br>
+
+### Conditionals(조건문)
+true인지 false인지 알려주기 때문에 중요하다. (예. 로그인여부 등)
+```javascript
+const age = propmt("How old are you?");
+```
++ prompt 는 사용자기 직접 입력 하게 한다.
++ prompt는 자바스크립트를 기다리게 한다.
++ 실행하면 실행한 페이지가 로딩하는 것 처럼 작동된다.
++ 브라우저가 만들어 놓은 방법이라 안예쁨
++ 요즘은 잘 안쓰고 직접 만들어서 모달창을 만든다.
++ cancel하면 null이 저장된다.
++ 입력한 값은 문자타입으로 받기때문에 데이터 변환이 필요하다.
++ 입력한 값은 다 값으로 받기 때문에 데이터 변환을 통해 원하는 값을 구분해야 한다.
++ 한 type을 받아서 다른 type으로 바꿀 수 있는 방법이 필요하다.
+  + number값으로 변경해보자
+  > `typeof` : 값의 type을 알고 싶을때 쓴다.
+  > + typeof 변수명  or  typeof(변수명)
+
+#### parseInt() 
+> A string to convert into a number.
+> parseInt("15") -> 15
