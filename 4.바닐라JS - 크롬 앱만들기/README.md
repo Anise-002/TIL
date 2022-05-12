@@ -376,3 +376,228 @@ const age = propmt("How old are you?");
 #### parseInt() 
 > A string to convert into a number.
 > parseInt("15") -> 15
+
+
+
+<br>
+<br>
+<br>
+
+## 4일차
+### The Document Object
+
+ + Document는 객체이다. 그래서 원하는 값을 가져다 쓸 수 있다.
+ + 그리고 document의 프로퍼티의 값을 바꿀 수 있다.
+ ```javascript
+console.log( document.title);
+//html파일에 입력한 title이 나온다.
+ document.title = Hi~
+console.log( document.title);   
+//title이 Hi로 변경되었다.
+```
++ 자바스크립트를 이용ㅇ해 html의 정보를 가져다 쓸 수 있으며, 변경도 가능하다.
++ `document`는 모든 것의 시작점이면서 website를 의미한다.
+```javascript
+document.body
+//html의 안에 있는 body태그를 보여준다.
+```
+<br>
+
+### HTML in Javascript
+특정한 무언가를 가져오는 방법을 알아보자
++ 자바스크립트파일에서 html elemnent를 가져오는 것은 가장 중요한 개념중에 하나이다.
++ 매우 중요함으로 이 개념은 머리속에 기억하도록 하자
+
+> `html element를 가져온다. ` →  `자바스크립트를 통해 변경`
+
+#### 1. 값을 가져온다. => getElementById()
+>자바스크립트로 html에 있는 id의 값을 element를 가져올 수 있으며, 이것을 통해 자바스크립트가 값을 변경할 수 있다.
+(class의 값을 가져올 수도 있다.)
+
+```javascript
+const title = document.getElementById('title');
+
+title.innerText = "Got you!"
+console.log(title.id);      //title
+console.log(title.className);     //
+```
+자바스크립트에 의해 안에 있는 내용을 바꾸었다.<br>
+또한 변수 title의 id를 조회하면 "title"이 출력되지만, 
+class를 조회하면 class를 부여하지 않았기 떄문에 아무것도 출력하지 않는다.
+
+<br>
+
+## Searching For Elements
++ class를 이용한 방법
+### getElementsByCalssName()
+> element를 한번에 가지고 와야 하는 경우 사용하는데 class이름이 같은 것들을 배열(array)로 가져와 준다.
+```javascript
+const hellos = document.getElementsByClassName("hello");
+
+console.log(hellos);
+//HTMLCollection(6) [h1.hello, h1.hello, h1.hello, h1.hello, h1.hello, h1.hello]
+```
+
+### getElementsByTagName();
+>()안에 있는 태그 들을 모두 가져와 배열로 만든다.
+
+### querySelector();
+> querySelector는 elemnet를 css방식으로 검색할 수 있다.
+즉 css처럼 감싸고 있는 태그 속에 있는 태그를 직접 선택할 수 있다.
+css selector처럼 사용할 수 있다.
+
+```javascript
+const title = document.querySelector(".hello h1");
+
+console.log(title);
+//<h1>Grab me!</h1>
+```
++ css처럼 쓸 수 있어서 쓰기 편해서 자주 사용하는 경우가 많다.
++ `querySelector()`는 만약 여러개에 부합한 값이 있다면 `첫번째꺼` `only하나만` 나오게 된다.
++ elelment를 출력해준다. (배열이 아니라)
+```javascript
+const title = document.querySelector("#hello");
+const title2 = document.getElementId("hello");
+```
+`title1`과 `title2`는 똑같은 일을 한다.<br>
+`getElementId()`는 지정한 element의 하위 element를 지정할 수 없다는 차이점이 있다. 
+
+다른 예제롤 보자.
+```html
+<div class="hello">
+        <h1>Grab me 1!</h1>
+    </div>
+    <div class="hello">
+        <h1>Grab me2!</h1>
+    </div>
+    <div class="hello">
+        <h1>Grab me3!</h1>
+    </div>
+```
+```javascript
+const title = document.querySelector(".hello h1");
+console.log(title);
+//<h1>Grab me 1!</h1>
+```
+만약 여기서 모든 element를 가져오고 싶다면 ?
+### querySelectorAll();
+>querySelector()의 조건에 부함하는 모든 element를 가져오고 싶을떄 사용한다.
++ 배열로 출력해준다.
+```javascript
+const title = document.querySelectorAll(".hello h1");
+console.log(title);
+//NodeList(3) [h1, h1, h1]
+```
+<br>
+
+### Events
+>클릭, 마우스를 올라가는 것, 입력을 끝내거나 enter를 누른다. wifi에 접속하는 등의 모든 것들
+
+#### evnet를 listne해야 한다. => addEventListener
++ 유저의 행동을 listen하여 event를 실행한다. 
+>addEventListener는 이벤트를 listen하는 건데 어떤 이벤트를 listen해야하는지 알려줘야 한다.(우리는 모든 이벤트가 필요한것이 아니라 한가지 이벤트를 이용하고 싶으니까)
+
+```javascript
+const title = document.querySelector(".hello h1");
+
+function handTitleClick(){
+    console.log("title was clicked");
+}
+
+title.addEventListener('click', handTitleClick);
+
+```
++ title를 클릭하면 console에 "title was clicked"가 출력된다.
++ 이때 중요한 것은 이벤트 함수의 두번쩨 인수에는 함수 이름을 넣을떄 `()`을 넣지 않고 입력해줘야한다. 자바스크립트 엔진이 알아서 함수를 호출할 수 있도록 하기 위함이다.
+<br>
+
+### Events part Two
++ 이벤트의 종류를 알고 싶을때
+
+1. [MDN 페이지](https://developer.mozilla.org/en-US/docs/Web/API/Element#events)를 통해 이벤트를 조사할 수 있다.
+
+2. `console.dir()`를 통해 on으로 시작하는 속성들은 모두 이벤트를 나타낸다.
+
+
+#### 마우스 이벤트알아보기(mouseenter, mouseleave)
++ `mouseenter` : 마우스가 올라가면 실행되는 이벤트
++ `mouseleave` : 마우스가 지정한 element를 떠나가면 실행되는 이벤트
+
+```javascript
+const title = document.querySelector(".hello h1");
+
+function handTitleClick(){
+    title.style.color = "blue";
+}
+
+function handleMouseEnter(){
+    title.innerText = "Mouse is here"
+}
+
+function handleMouseLeave(){
+    title.innerText = "Mouse is gone!"
+}
+title.addEventListener('click', handTitleClick);
+title.addEventListener('mouseenter',handleMouseEnter);
+title.addEventListener('mouseleave',handleMouseLeave);
+```
+
+<br>
+
+### More Events
++ 이벤트를 실행에 또다른 실행 코드
+```javascript
+title.onclick = handTitleClick;
+title.onmouseenter = handleMouseEnter;
+title.onmouseleave = handleMouseLeave;
+```
+  하지만 이 방법보다는 `addEventListener`를 이용하는데 그 이유는 `removeEventListenr`를 이용해 제거할 수 있기 때문이다.
+
+
+#### [window MDN](https://developer.mozilla.org/ko/docs/Web/API/Window) : 윈도우 이벤트 찾아서 적용해보기
+```javascript
+
+const title = document.querySelector(".hello h1");
+
+function handTitleClick(){
+    title.style.color = "blue";
+}
+
+function handleMouseEnter(){
+    title.innerText = "Mouse is here"
+}
+
+function handleMouseLeave(){
+    title.innerText = "Mouse is gone!"
+}
+
+function handleWindowResize(){
+    document.body.style.backgroundColor = "tomato";
+}
+function handleWindowCopy(){
+    alert("copier!!!!");
+}
+function handleWindowOffline(){
+    alert("SOS no WIFI!")
+}
+function handleWindowOnline(){
+    alert("All GOOD!")
+}
+title.addEventListener('click', handTitleClick);
+title.addEventListener('mouseenter',handleMouseEnter);
+title.addEventListener('mouseleave',handleMouseLeave);
+
+window.addEventListener("resize",handleWindowResize);
+window.addEventListener("copy",handleWindowCopy);
+window.addEventListener("offline", handleWindowOffline);
+window.addEventListener("online",handleWindowOnline);
+
+```
+
++ `resize` : 윈도우 창이 변경되면 실행되는 이벤트
++ `copy` : 윈도우에 복사가 이러나면 실행되는 이벤트
++ `offline` : wifi가 없으면 일어나는 이벤트
++ `online` : wifi가 연결되면 일어나는 이벤트
+
+이 모든 이벤트들은 자바스크립트에서 지원하고 있다.
+필요에 따라 이벤트를 찾아보는 자세가 필요해 보인다.
