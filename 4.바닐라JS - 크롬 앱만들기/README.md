@@ -601,3 +601,156 @@ window.addEventListener("online",handleWindowOnline);
 
 이 모든 이벤트들은 자바스크립트에서 지원하고 있다.
 필요에 따라 이벤트를 찾아보는 자세가 필요해 보인다.
+
+## 5일차
+### CSS in Javascript
+자바스크립트 파일 안에서 css인 style을 이용해 색상을 변경해보자
+```javascript
+const h1 = document.querySelector(".hello h1");
+
+function handTitleClick(){
+    if(h1.style.color === "blue"){
+        h1.style.color = "tomato";
+    }else{
+        h1.style.color = "blue"
+    }
+}
+
+h1.addEventListener("click", handTitleClick);
+```
++ if문을 이용해 style.color가 blue이면 tomato색으로 변경하고, 그렇지 않으면 blue를 넣어 색상을 변경한다.
+
+하지만 공통된 단어가 반복 됨으로 `h1.style.color`를 변수에 넣어 사용하여 코드를 사용이 좋게 하도록 한다.
+
+```javascript
+const h1 = document.querySelector(".hello h1");
+
+function handTitleClick(){
+    const currentColor = h1.style.color;
+    let newColor;
+    if(currentColor === "blue"){
+        newColor = "tomato";
+    }else{
+        newColor = "blue"
+    }
+    h1.style.color = newColor;
+}
+
+h1.addEventListener("click", handTitleClick);
+```
++ `currentColor`에 반복되었던 `h1.style.color`를 저장한다.
++ `let newColor`변수를 생성해 if문 안에서 h1에 조건 상황에 맞는 색상을 할당해 준다.
++ if문이 끝나면 `newColor`에 할당되어 저장된 색상이 `h1.style.color`에 적용되게 해준다.
++ 그러면 클릭했을때 우리가 원하는 결과를 얻을 수 있다.
+
+하지만, element의 style을 자바스크립트 안에서 변경하는 것은 좋은 방법이 아니다. 왜냐하면 style을 관여한느 파일인 css가 있음에도 자바스크립트에서 변경하게 되면 스타일에 대한 코드가 섞여 나중에는 찾기 어려워져 유지보수하는데에 어려움이 있다.
+
+따라서 스타일은 css를 통해 설정하고 그것을 가져와 제어하는 것이 가장 바람직하다.
+
+>**이벤트 함수 다루기** 
+>1. html의 element를 가져온다. → 2. element에 이벤트를 걸어준다.  →  3. 이벤트 함수에 동작을 적용한다.
+
+<br>
+
+### CSS in javascript 2
+css는 style에 적합한 일을 하기 위한 언어임으로 그게 맞는 일을 할 수 있도록 코드를 작성해 주어야 한다.
+
+> `className` : element의 class를 조회할 수 있으며, 할당할시 이전의 class를 고려하지 않고 이전 class를 삭제하고 새로 할당한 class를 추가 한다.
+
+```css
+body{
+    background-color: beige;;
+}
+
+h1{
+    color : cornflowerblue
+}
+
+.active{
+    color: tomato;
+}
+```
+css에 바꾸고자하는 색상을 클래스로 설정해준다.
+
+```javascript
+const h1 = document.querySelector(".hello h1");
+
+function handTitleClick(){
+   h1.className = "active";
+}
+
+h1.addEventListener("click", handTitleClick);
+```
+자바스크립트로 css를 바꾸지 않고 html의 요소를 추가하는 방법으로 html과 상호작용하는 코드(` h1.className = "active";` - h1에 class "active"를 추가해준다.)로 작성한다. 그러면 본래의 자바스크립트의 역활인 html과 상호작용만을 통해 style을 바꿀 수 있게 된다.
+
+```javascript
+const h1 = document.querySelector(".hello h1");
+
+function handTitleClick(){
+    if(h1.className === "active"){
+        h1.className = " ";
+    }else{
+        h1.className = "active";
+    }
+}
+
+h1.addEventListener("click", handTitleClick);
+```
++ if문을 이용해 클래스 active가 있으면 " "(빈문자열)을 할당하고, 없으면 "active"가 할당되게 하게 해서 글자의 색상을 클릭할때마다 변화하도록 했다.
+
++ 이 코드에서 "active"로 할당한 값은 사람의 실수로 에러를 발생시킬 수 있는 위험성이 있다. 그리고 active의 값이 아닌 다른 클래스로 변경하고 싶어질때 여러번 그 작업을 수행해야 함으로 유지보수와 에러에 취약할 수 있는 단점이 있다.
+
++ 따라서 "active"를 변수에 넣어 관리하면 이름이 변경되어 수정할때 수정이 용이하다.
+```javascript
+const h1 = document.querySelector(".hello h1");
+
+function handTitleClick(){
+    const clickedClass = "active";
+    if(h1.className === clickedClass){
+        h1.className = " ";
+    }else{
+        h1.className = clickedClass;
+    }
+}
+
+h1.addEventListener("click", handTitleClick);
+```
+`const clickedClass = "active";`를 넣어 사용하게 되면 active의 이름이 변경되어도 이 변수의 값만 변경하면 되고, 또한 자바스크립트에서 실수를 알려주기도 하기 때문에 문자보다는 변수의 식별자를 이용해 작성하는 것이 좋다.
+
++ 하지만, 이곳에서도 작은 버그가 있다.
+
+그 버그는 만약 `h1`이 원래 가지고 있는 class가 있다면 현재의 코드를 실행하게 된다면 원래 가지고 있는 코드를 날리고 교체가 되는 것임으로 원래의 class를 유지하기 어려워진다.
+
+### CSS in Javscript 3
+원래 가지고 있는 클래스를 삭제하지 않고 class를 추가한다.
+> `classList` : class들의 목록으로 작업할 수 있게 허용해준다. 
+> + 여러가지 옵션을 가지고 있다. ( `contains`, `add`, `remove` 등)
+> 1. `contains()` :  ()안에 클래스를 포함하고 있는지에 대한 여부를 알 수 있다.
+>1. `add()` : ()안에 클래스를 element에 다른 클래스에 영향을 주지 않고 추가할 수 있다.
+> 1. `remove()` : ()안에 클래스만 제거할 수 있다.
+
+```javascript
+const h1 = document.querySelector(".hello h1");
+
+function handTitleClick(){
+    const clickedClass = "active";
+    if(h1.classList.contains(clickedClass)){
+        h1.classList.remove(clickedClass);
+    }else{
+        h1.classList.add(clickedClass);
+    }
+}
+
+h1.addEventListener("click", handTitleClick);
+```
++ 이렇게 하면 기존에 있는 클래스에 영향을 주지 않고 클래스를 추가하고 제거할 수 있다.
+>4. `toggle()` : ()안에 있는 클래스가 없다면 추가해주고, 있다면 제거해주는 함수
+>+ 위 예제에서 작성했던 if문안에 `contains`, `add`, `remove`등의 코드를 사용하지 않고 한줄로 코드를 작성할 수 있다.
+
+```javascript
+function handTitleClick(){
+    h1.classList.toggle("active");
+}
+```
++ `toggle`은 "active"가 있는지 체크하고, 없다면 추가, 있다면 제거를 해준다.
++ "문자열"은 2개 있을때는 const로 묶어 관리하지만, 한번만 사용한다면 문자열 그대로 사용하도록 하자.
