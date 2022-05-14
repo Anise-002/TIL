@@ -60,4 +60,4 @@ colorHandler();
 
 과제를 수행하면서 이 코드보다 더 괜찮은 코드는 무엇이 있을까 고민했지만, 지금 내 머리에서 나오는 수준이 이정도가 베스티인 것 같다. 뭔가를 더 할려고 하면 더 코드가 더 길어지는 것 같아서 더 만지기를 포기했다. classList.remove보다 더 나은 코드가 있을 것 같은데 지금까지 배운거로는 할 수 있는게 각 변수명을 넣어서 제거해주는 것밖에... 
 
-
+(답안샌드박스)[https://codesandbox.io/s/day-four-solution-y1vrn?file=/src/index.js];
