@@ -186,7 +186,7 @@ console.log(player["name"]);
 ```javascript
 console.log(player);
 //{name : "kim",pointer : 1212,hansome : false, fat : false }
-player.fat = ture;
+player.fat = true;
 //player안에 있는 fat의 값을 변경했다.
 console.log(player);
 //{name : "kim",pointer : 1212,hansome : false, fat : false }
@@ -366,7 +366,7 @@ const age = propmt("How old are you?");
 + 브라우저가 만들어 놓은 방법이라 안예쁨
 + 요즘은 잘 안쓰고 직접 만들어서 모달창을 만든다.
 + cancel하면 null이 저장된다.
-+ 입력한 값은 문자타입으로 받기때문에 데이터 변환이 필요하다.
++ 입력한 값은 기본적으로 문자타입으로 받기때문에 데이터 변환이 필요하다.
 + 입력한 값은 다 값으로 받기 때문에 데이터 변환을 통해 원하는 값을 구분해야 한다.
 + 한 type을 받아서 다른 type으로 바꿀 수 있는 방법이 필요하다.
   + number값으로 변경해보자
@@ -375,8 +375,98 @@ const age = propmt("How old are you?");
 
 #### parseInt() 
 > A string to convert into a number.
-> parseInt("15") -> 15
+> <br>string(문자) → number(숫자)로 변경한다.
+> <br>parseInt("15") -> 15 ( number )
+> + 숫자로 변경해서 값을 비교할 수 있다.
+> + 또한 문자는 NaN을 반환한다.
 
+#### isNaN()
+> (  )안에 값(number을 써야한다.)가 NaN인지 판별하는 함수<br>
+> 불리언 값을 반환한다.
+> + `false` : NaN가 아닌 숫자(number)이다.
+> + `true` : NaN 가 맞다.
+
+#### if 조건문 작성
+```javascript
+if(condition){
+    /// condition === true
+}else{
+    /// condition === false
+}
+```
++ `condition`은 꼭 불리언으로 판별할 수 있어야 한다.
++ `else`이후 쓸 것이 없다면 안 써도 괜찮다.
++ 첫번째 블록에는 `condition`이 `true`여야 실행된다.
++ 'else`뒤는 'condition`이 `false`라면 실행된다.
+```javascript
+const age = parseInt(prompt("How old are you?")) ;
+
+if(isNaN(age)){
+    ///////=true
+    console.log("Please write a number");
+}else{
+    //// falsed
+    console.log("Thank you for wirting your age.")
+}
+```
+
+#### else if 조건문 - 음주 나이 계산기 만들기
+```javascript
+const age = parseInt(prompt("How old are you?")) ;
+
+if(isNaN(age) || age < 0 ){
+    ///////=true
+    console.log("Please write a real positive number");
+}else if(age < 18){
+    //// 첫번째 조건 === falsed
+    // 두번째 조건 === true;
+    console.log("You are too young")
+}else if(age >= 18 && age <= 50){
+    console.log("You can drink")
+}else if(age > 50 && age <=80){
+    console.log("You should exercise");
+}else if(age > 80){
+    console.log("You can do whatever you want");
+}
+```
++ 여러 조건이 필요해 추가할때 사용한다.
++ 조건의 결과가 false일 경우 다음 조건문을 대조하여 true인 곳 블록의 실행코드를 수행한다.
+
+
+#### `연산자 && ` : &&의 모든 조건이 true여야 `true`;
+> true && true = true<br>
+> false && true = false<br>
+> true && false = false<br>
+> false && false = false<br>
+
+#### `연산자 || ` : ||는 하나만 true이면 'true'
+> true || true = true<br>
+> flas || true  = true<br>
+> true || false = true<br>
+> false || false = false<br>
+
+```javascript
+else if(age > 80){
+    console.log("You can do whatever you want");
+}else if(age === 100){
+    console.log("wow, you are wise");
+}
+```
++ 조건문에는 순서가 중요하다.
++ 위 예제 같은 경우  age가 100이여도 콘솔에는 "You can do whatever you want" 가 출력된다.
++ 그 이유는 자바스크립트가 위에서 아래로 코드를 읽어나가는데 조건(age > 80 )을 만나면서 true가 되고 그 블록의 코드를 실행한 후 다음으로 넘어가지 않기 때문에 조건 (age === 100)이 맞다 하더라도 실행되지 않는 것이다.
+
+이럴때는 순서를 바꿔서 작성해줘야한다.
+```javascript
+else if(age === 100){
+    console.log("wow, you are wise")
+}else if(age > 80){
+    console.log("You can do whatever you want")
+}
+```
+이렇게 되면 age가 100일때 "wow, you are wise"가 출력 될 수 있으며, 나머지 값들은 (age > 80) 조건에 부합하기 때문에 마지막 조건문이 실행된다.
+
++ 특정 조건을 따로 지정하고 싶다면 그 조건을 포함하는 범위보다 앞에 작성하거나, 다른 조건문을 활용하여 코드를 작성하는 것이 바람직하다.
 
 
 <br>
@@ -754,3 +844,14 @@ function handTitleClick(){
 ```
 + `toggle`은 "active"가 있는지 체크하고, 없다면 추가, 있다면 제거를 해준다.
 + "문자열"은 2개 있을때는 const로 묶어 관리하지만, 한번만 사용한다면 문자열 그대로 사용하도록 하자.
+
+<br>
+<br>
+
+## 6일차(3일차 정리 못 한거 정리)
+### Conditionals
+> 조건문, true인지 fals인지 알려주기 때문에 중요하며 무언가를 확인해야 할 때 대부분 사용한다.
+>+ 로그인 유무, 사용자의 반응할때 사용한다.
+> `if`, `else` 키워드를 사용한다.
+
+
