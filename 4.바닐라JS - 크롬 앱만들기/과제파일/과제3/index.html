@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .hidden {
+          display: none;
+        }
+      </style>
+</head>
+<body>
+    <h1>Random Number Game</h1>
+    <form id="Game-form">
+      <h3 class="maxnumber">
+        Generate a number between 0 and
+        <input required min="1" type="number" />
+      </h3>
+      <p class="guessnumber">
+        Guess the number: <input required max min="0" type="number" />
+        <button>play!</button>
+      </p>
+    </form>
+    <p class="hidden" id="game-score">
+      You chose : <span class="usernum-view"></span>, 
+      the machine chose:<span class="machinenum-view"></span>
+    </p>
+    <h3 class="game-result hidden"></h3>
+
+
+    <script src="./app.js"></script>
+</body>
+</html>
