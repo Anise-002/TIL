@@ -226,3 +226,102 @@ if(saveUsername === null){
 2. null이 아니라면
 + gretting(h1)안에 ``Hello ${saveUsername}``을 넣는다. 
 + h1태그에 hidden클래스를 제거함으로서 h1태그가 브라우저에 보이도록 한다.
+<br>
+<br>
+<br>
+
+## 8일차 - Clock
+### Intervals
+
+> interval : '매번'일어나야 하는 무언가를 말함
+예) 매 2초마다 무슨 일이 일어나도록 하는 것(반복적으로 계속해서 나타난다.)
+
+```javascript
+function sayHello(){
+    console.log('hello')l
+}
+```
+내가 이 동작을 2초마다 한 번씩 반복하고 싶다고 한다면?
+(이런 동작의 예시로 2초마다 주식시장 api를 확인하는 기능 같은 것들이 있다.)
+
+>`setInterval()`을 사용한다.
++ setInterval()은 두개의 인수를 받는데 첫번째는 `실행할 함수`, 두번째는 시간(매 호출 사이에 얼마나 기다릴 시간/ 단위는 ms <1000ms = 1s>)을 넣는다.
+```javascript
+setInterval(sayHello, 5000);
+```
+<br>
+
+### Timeouts and Dates
+일정시간이 지난 후에 딱 한번만 실행되는 기능
+> `setTimeout()`: 일정시간 이후에 딱 한번만 실행
++ 첫번째 인수 : 실행할 함수
++ 두번째 인수 : 호출 사이에 기다리는 시간
+
+#### 시게를 만들자
+1. [`Date()`](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Date)
+
+>+ `Date.prototype.getHours()` : Date에서 현지 시간 기준 시(0–23)를 반환합니다.
+ >+ `Date.prototype.getMinutes()` : Date에서 현지 시간 기준 분(0–59)을 반환합니다.
+>+ `Date.prototype.getSeconds()` : Date에서 현지 시간 기준 초(0–59)를 반환합니다.
+>+ `Date.prototype.getFullYear()` : Date에서 현지 시간 기준 연도(네 자리 연도면 네 자리로)를 반환합니다.
+>+ `Date.prototype.getMonth()` : Date에서 현지 시간 기준 월(0–11)을 반환합니다.
+
+```javascript
+function getClock(){
+    const date = new Date();
+    clock.innerText = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+}
+```
++ 변수 date에 `new Date()`를 저장하여 date 변수가 `new Date()`가 가지고 있는 메서드를 사용 할 수 있게 해준다.
++ clock변수를 가지고 있는 태그 안에 text로 현재 가져온 값을 브라우저 화면에 내보낸다. 
+
+```javascript
+getClock();
+setInterval(getClock,1000);
+```
++ `setInterval`를 통해 1초별로 `getClock`함수가 호출되게 해준다.
++ 이때, `setInterval`는 호출되고 1초 후에 `getClock`함수가 실행되기 때문에 브라우저를 열자마자 1초간 공백이 생긴다.
++ 공백을 채우기 위해 `getClock`함수를 브라우저가 열자마자 호출시켜 공백을 매꿔준다.
+
+<br>
+
+### PadStart
+#### padStart()
+> `string에 쓸 수 있는 function`으로 string의 길이를 제약할 수 있고 조건에 맞지 않는다면 `앞`에 지정한 문자(string)을 넣을 수 있다.
+```javascript
+"1".padStart(2,"0");
+//"01"
+"hello".padStart(20,"x");
+//'xxxxxxxxxxxxxxxhello'
+```
++ 첫번째 인수 : string의 문자 수(길이)
++ 두번째 인수 : "지정한 string의 문자 수"가 아닐때 앞에 붙여줄 문자
+
+#### padEnd()
+>`padStart()`함수처럼 string의 길이를 지정하고 조건에 맞지 않다면 `뒤`에 지정한 string(문자)를 넣는다.
+```javascript
+"1".padEnd(2,"0");
+//"10"
+```
+
+#### 시계의 작은 버그를 고쳐보자!
+시계가 한자리 수 일때 "1"로 표시된다.
+시계의 숫자가 한자리 수 여도 "01"로 표기하고 싶다.
+
+1. 각 date.속성을 각 변수에 넣는다.
+    ```javascript
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+    clock.innerText = `${hours} : ${Minutes} : ${hosecondsurs}`
+    ```
+2. 여기서 date.메서드()로 인해 나오는 숫자의 타입은 `Number`이다.
+3. `Number`는 `padStart()`와 `padEnd()`를 사용 할 수 없다.(String만 사용할 수 있는 함수이기 때문에...)
+4. `Number`를 `String`으로 변경해준다.
+    ```javascript
+    //String()을 이용해 문자열로 만들어 준 다음에 padStart를 이용한다.
+    const hours = String(date.getHours()).padStart(2,"0");
+    const Minutes = String(date.getMinutes()).padStart(2,"0");
+    const seconds = String(date.getSeconds()).padStart(2,"0");
+    ```
+5. `PadStart()`를 이용해 문자열이 2자리 수가 아니면 2자리 수가 될 수 있도록 앞에 0을 붙여주도록 한다.
