@@ -325,3 +325,67 @@ setInterval(getClock,1000);
     const seconds = String(date.getSeconds()).padStart(2,"0");
     ```
 5. `PadStart()`를 이용해 문자열이 2자리 수가 아니면 2자리 수가 될 수 있도록 앞에 0을 붙여주도록 한다.
+<br>
+<br>
+<br>
+
+## 9일차 - Quotes
+명언 랜덤으로 나타내기
+### Math
+#### 1. Math.random()
+> 0 에서 1의 값을 랜덤으로 만든다.
+```javascript
+Math.random();
+//0에서 10까지의 랜덤한 값을 가지고 싶을때
+Math.random() * 10;
+```
+#### 2. Math.round/ceil/floor()
++ `Math.random()`은 소수점이 나타난다. 따라서 그것들을 지울 필요가 있다.
+
+1. Math.round()
+> 반올림
+2. Math.ceil()
+> 올림
+3. Math.floor()
+> 내림
+
+#### 구현
+1. `quotes`의 배열안에 `quote`와 `quthor`를 한 묶음인 객체를 배열에 적어준다.
+2. `Math.random()`을 이용해 배열을 참조한다.
+  + 배열을 참조할 때 -> quotes[ ] : [ ]안에 숫자(인덱스번호)를 넣어 불러올 수 있다.
+3. `Math.random()`은 0에서 1까지의 수를 나타내기 때문에 `배열의 길이(length를 이용)`를 곱해 범위를 넓혀준다.
+4. `Math.random()`이 가지고 있는 소수점을 `Math.floor()`를 통해 날려준다.
++ `Math.random()`에 `배열의 길이`를 곱한 값은 곱한 값이 결과로 나오지 않는다.
++ 따라서 `Math.floor()`는 모든 수를 내림하기 때문에 배열의 인덱스번호(lenght-1)까지 다 나타내줄 수 있다.
++ 만약 `Math.ceil()`을 쓴다면 10까지 값이 나올 수 있는데, index값에는 10이 없기 때문에 에러가 나타날 수 있다.
+5. `innerText`를 이용해 랜덤하게 나타나는 명언들을 html에 넣어준다.
+
+<br>
+
+### Background
+랜덤한 명언글을 넣을 것과 동일한 방법으로 만든다.
+#### document.createElement()
+> html문서에서 생성할 요소의 유형을 지정하여 만든다.
+>+ ()안에 생성할 태그(문자열)을 작성한다.
+>+ [mdn문서](https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement)
+```javascript
+document.createElement("div");
+```
+#### appendChild()
+> 인터페이스 의 appendChild()메서드는 Node지정된 부모 노드의 자식 목록 `끝에 노드를 추가`합니다. 
+>+ [mdn문서](https://developer.mozilla.org/en-US/docs/Web/API/Node/appendChild)
+```javascript
+const bgImage = document.createElement("img");
+document.body.appendChild(bgImage);
+```
++ html에 body태그 끝에 img태그가 생성된다.
+#### prependChild()
+> appendChild()와 같은 기능을 가지며, 지정되는 `요소의 첫번째 자식 앞에 추가`된다.
+>+ [mdn문서](https://developer.mozilla.org/en-US/docs/Web/API/Element/prepend)
+
+#### 구현
+1. `images` 배열에 img파일에 있는 이미지의 이름과 확장자를 문자열로 넣어 배열을 만들어준다.
+2. 랜덤 명언을 만든 것과 같이 랜덤하게 배열을 참조할 수 있게 코드를 작성한다.
+3. `document.createElement`를 이용해 <img>태그를 생성한다.
+4. <img>태그에 src 속성을 추가한다.
+5. `appendChild()`를 이용해 html에 생성한다.
