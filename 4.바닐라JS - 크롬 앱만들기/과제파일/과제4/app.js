@@ -1,7 +1,8 @@
 const clockTitle = document.querySelector(".js-clock");
 
 function ChritsmasDday() {
-  const Christmas = new Date("2022-11-25");
+  
+  const Christmas = new Date(`${new Date().getFullYear()}-12-25T00:00:00`);
   const today = new Date();
   const milliSeconds = Christmas - today;
   const days = String(
