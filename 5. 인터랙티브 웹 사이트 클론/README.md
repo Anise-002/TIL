@@ -271,3 +271,152 @@ function scrollLoop(){
 ```
 `currentScene`이 바뀔때 마다 id값을 부여해줄 수 있다. -> setLayout()에서 로드하자마자 `currentScene`를 계산해서 id를 넣어줬기 때문에 스크롤을 하지 않아도 id가 이미 부여되어 있어 `sticky-elem`이 나타나 있다.<br>
 따라서 `currentScene`가 바뀔 때에 재 설정만 해주면 된다.
+<br>
+
+### 스크롤 애니메이션 구현1
+`sceneInfo`객체 안 objs에 우리가 원하는 html요소를 추가한다.
+```javascript
+{   
+            //scroll-section-0
+            type : 'sticky',
+            heightNum : 5, //브라우저 높이의 5배로 scrollHeight 세팅
+            scrollHeight: 0,
+            objs : {
+
+                container : document.querySelector('#scroll-section-0'),
+                messageA : document.querySelector('#scroll-section-0 .main-message.a'),
+                messageB : document.querySelector('#scroll-section-0 .main-message.b'),
+                messageC : document.querySelector('#scroll-section-0 .main-message.c'),
+                messageD : document.querySelector('#scroll-section-0 .main-message.d'),
+            },//html 요소들을 넣는 객체
+            values : {
+                messageA_opacity : [0, 1]
+            }
+
+        }
+```
+`#scroll-section-0 .main-message.a`요소는 스크롤 했을때 투명도가 0에서 1로 바뀌었다가 다시 0으로 돌아가는 애니메션을 가지고 있는 요소가 될 것이다.
+
+opacity값도 values라는 프로퍼티 객체로 넣어 정보를 입력해준다.
+
+
+```javascript
+function playAnimation(){
+        switch(currentScene){
+            case 0: 
+                console.log('0 play');
+                break;
+            case 1 : 
+                // console.log('1 play');
+                break;
+            case 2 :
+                // console.log('2 play');
+                break;
+            case 3 :
+                // console.log('3 play');
+                break;
+        }
+    }
+```
+스크롤 할때 일어나는 동작임으로 스크롤 이벤트를 실행하는 함수에서 호출시켜주며,
+switch문을 이용해 전달 받은 매개변수의 값에 조건을 통해 현재 내가 스크롤한 화면이 몇번 section인지 값을 얻어 올수 있다.
+
+그리고 화면상의 section에 해당하는 동작도 case를 통해 구분해서 넣을 수 있다.
+
+<br>
+
+### 스크롤 애니메이션 구현2
+섹션 안에서 스크롤이 위치하는 비율을 구해야 한다.
+> 섹션안에서의 offsetY 값 / 섹션의 전체 높이 => 0에서 1사이의 비율을 얻을 수 있다.
+#### 섹션 안에서의 offsetY 값 구하기
+> pageYOffset(전체페이지에서 움직인 스크롤의 높이 값) - 이전 섹션들의 높이의 합
+   + 이렇게 계산하게 되면 현재 보여지는 섹션에서의 스크롤의 값만 알 수 있다.
+
+### 섹션안에서의 비율을 구하는 함수
+```javascript
+//currentYOffset : 현재 얼마나 스클로이 되었는지 (각 섹션에서)
+    function calcValues(values, currentYOffset){
+        let rv;
+        //현재 씬(스크롤섹션)에서 스크롤된 범위를 비율로 구하기
+        let scrollRatio = currentYOffset / sceneInfo[currentScene].scrollHeight;
+        
+        rv = scrollRatio * ( values[1]-values[0]) + values[0];
+        
+        return rv;
+    }
+```
++ `rv = scrollRatio * ( values[1]-values[0]) + values[0];` 
+   + 0에서 1사이의 값을 사용하기엔 힘이 들고, 재사용하기 힘들기 때문에 큰 숫자로 바꿔줄 필요가 있다.
+   + 그래서 변화되는 값의 차이를 곱해 범위를 정하고, 변화되기 전의 초기값을 더해줘 처음 값이 0이 되지 않도록 한다.
++ 함수의 매개변수 
+   + `values` : sceneInfor객체안에 value프로퍼티에 접근하도록 하는 인수
+   + `currentYOffset` : 현재 스크롤이 현재의 섹션에 몇px의 값을 갖는지 얻기 위한 인수
+   + 두 인수 전부 스크롤 할때 호출되는 함수(playAnimation()) 안에서 계산되어진 값이면서 playAnimation()는 `calcValues`함수를 호출하여 값을 인수로 넣어준다.
+
+#### 구한 값을 css에 적용하기
+```javascript
+const currentYOffset = yOffset - prevScrollHeight;
+
+switch(currentScene){
+            case 0: 
+                //console.log('0 play');
+                let messageA_opacity_in = calcValues(values.messageA_opacity, currentYOffset);
+                console.log(messageA_opacity_in);
+                //css
+                objs.messageA.style.opacity = messageA_opacity_in;
+                break;
+                ....
+}
+```
+변화하는 비율을 값에 따라 변화되도록 만든 함수를 이용해 css에 적용시켜준다.
++ `calcValues(values.messageA_opacity, currentYOffset);를 이용해 스크롤을 할때마다 변화되는 값을 얻는다.
++ css.style.opacity를 통해 `objs.messageA`의 css를 변경시켜준다.
+
+하지만, 섹션에 처음부터 끝까지 실행되는것이 아닌 특정 구역만 실행하도록 원한다.
+
+<br>
+
+#### 스크롤 애니메이션 구현4
+다음 섹션으로 넘어갈때나 위로 스크롤할때, 값이 마이너스(-)값이 될는 오류가 발생한다.
+이 것은 스크롤이 속도에 따라 값이 영향을 받기 때문이라, 섹션이 변경될때 이러한 오류가 발생하니까 그 순간(섹션이 넘어가는 순간)만 값의 체크를 해준다.
+
+섹션이 바뀌는 것을 알 수 있는 구간은 currentScene이 변화되는 곳이다.
+즉, `scrollLoop()`안에 코드를 수정해주면 된다.
+
+```javascript
+let enterNewScene;  //새로운 section이 시작된 순간 true;
+
+function scrollLoop(){
+        prevScrollHeight = 0;
+        enterNewScene = false;
+        for(let i = 0; i < currentScene; i++){
+            prevScrollHeight += sceneInfo[i].scrollHeight;
+        }
+        if(yOffset > prevScrollHeight + sceneInfo[currentScene].scrollHeight){
+            enterNewScene = true;
+            currentScene++;
+            document.body.setAttribute('id', `show-scene-${currentScene}`);
+
+        }
+        if(yOffset < prevScrollHeight){
+            if(currentScene === -1) return; //브라우저 바운스 효과로 인해 마이너스가 되는 것을 방지(모바일)
+            enterNewScene = true;
+            currentScene--;
+            document.body.setAttribute('id', `show-scene-${currentScene}`);
+        }
+
+        if(enterNewScene === true) return;
+        playAnimation();
+       
+    }
+```
++ 전역 변수로 `let enterNewScene; ` 선언해준다. (이 변수는 currentScene이 변화되는지 알려주는 변수가 된다.)
++ currentScene이 변화될때 `enterNewScene`의 값을 true로 만든다.
++  `scrollLoop()` 안에 `enterNewScene`의 값을 false로 지정해준다. 그 이유는 스크롤할 때마다 초기값을 false로 만들어줘야 currnetScene이 변화될때 true로 변화되는 것을 인식할 수 있기 때문이다.
+ + if문을 통해 `enterNewScene`의 값이 true일때는 함수를 빠져나가 아무것도 실행되지 않도록 해준다.
+
+
+이렇게 하면 섹션을 아래에서 위로 올릴때 섹션이 변화될때 발생하는 마이너스(-)값의 오류를 방지할 수 있다.
+<br>
+
+#### 특정 타이밍 스크롤 애니메이션 기능 추가
