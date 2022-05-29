@@ -420,3 +420,13 @@ function scrollLoop(){
 <br>
 
 #### 특정 타이밍 스크롤 애니메이션 기능 추가
+애니메이션이 재생되는 구간의 정보를 sceneInfo객체의 values값에 저장해준다.
+```javascript
+values : {
+                messageA_opacity : [0, 1, { start : 0.1, end:0.2}],
+                messageB_opacity : [0, 1, { start : 0.3, end:0.4}],
+            }
+```
++ 배열의 3번째 요소로 애니메이션이 시작(start)하는 구간(end)과 끝나는 구간의 정보를 담고 있는 객체를 준다.
++ start와 end의 값은 전체 scrollHeight의 전체를 1로 보았을때의 비율을 적은 것이다.
+
