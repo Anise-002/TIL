@@ -18,14 +18,20 @@
                 messageB : document.querySelector('#scroll-section-0 .main-message.b'),
                 messageC : document.querySelector('#scroll-section-0 .main-message.c'),
                 messageD : document.querySelector('#scroll-section-0 .main-message.d'),
+                canvas : document.querySelector('#video-canvas-0'),
+                context :  document.querySelector('#video-canvas-0').getContext('2d'),
+                videoImages : []
             },//html 요소들을 넣는 객체
             values : {
+                //canvas
+                videoImageCount : 300,
+                imgaeSequence : [0, 299],
+                canvas_opacity : [1, 0, {start : 0.9, end : 1}],
                 //in
                 messageA_opacity_in : [0, 1, { start : 0.1, end:0.2}],
                 messageB_opacity_in : [0, 1, { start : 0.3, end:0.4}],
                 messageC_opacity_in : [0, 1, { start : 0.5, end:0.6}],
                 messageD_opacity_in : [0, 1, { start : 0.7, end:0.8}],
-
                 messageA_translateY_in : [20, 0 ,{start : 0.1, end : 0.2}],
                 messageB_translateY_in : [20, 0 ,{start : 0.3, end : 0.4}],
                 messageC_translateY_in : [20, 0 ,{start : 0.5, end : 0.6}],
@@ -35,18 +41,18 @@
                 messageB_opacity_out : [1, 0, { start : 0.45, end:0.5}],
                 messageC_opacity_out : [1, 0, { start : 0.65, end:0.7}],
                 messageD_opacity_out : [1, 0, { start : 0.85, end:0.9}],
-
                 messageA_translateY_out : [0, -20, { start : 0.25, end:0.3}],
                 messageB_translateY_out : [0, -20,{start : 0.45, end : 0.5}],
                 messageC_translateY_out : [0, -20,{start : 0.55, end : 0.6}],
                 messageD_translateY_out : [0, -20,{start : 0.85, end : 0.9}],
+
             }
 
         },
         {
             //scroll-section-1
             type : 'normal',
-            heightNum : 5, 
+            // heightNum : 5, //normal에서는 필요 없음
             scrollHeight: 0,
             objs : {
                 container : document.querySelector('#scroll-section-1')
@@ -65,28 +71,35 @@
 				messageC: document.querySelector('#scroll-section-2 .c'),
 				pinB: document.querySelector('#scroll-section-2 .b .pin'),
 				pinC: document.querySelector('#scroll-section-2 .c .pin'),
+                canvas : document.querySelector("#video-canvas-1"),
+                context : document.querySelector("#video-canvas-1").getContext('2d'),
+                videoImages : []
             },
             values : {
+                //cavas
+                videoImageCount : 960,
+                imgaeSequence : [0, 959],
+                canvas_opacity_in : [0, 1, { start : 0, end : 0.05}],
+                canvas_opacity_out : [1, 0, { start : 0.95, end : 1}],
                 //in
-                messageA_opacity_in: [0, 1, { start: 0.15, end: 0.2 }],
-				messageB_opacity_in: [0, 1, { start: 0.5, end: 0.55 }],
-				messageC_opacity_in: [0, 1, { start: 0.72, end: 0.77 }],
                 messageA_translateY_in: [20, 0, { start: 0.15, end: 0.2 }],
-				messageB_translateY_in: [30, 0, { start: 0.5, end: 0.55 }],
-				messageC_translateY_in: [30, 0, { start: 0.72, end: 0.77 }],
-                pinB_opacity_in: [0, 1, { start: 0.5, end: 0.55 }],
-				pinC_opacity_in: [0, 1, { start: 0.72, end: 0.77 }],
-                pinB_scaleY: [0, 1, { start: 0.5, end: 0.55 }],
-				pinC_scaleY: [0, 1, { start: 0.72, end: 0.77 }],
-                //out
-                messageA_opacity_out: [1, 0, { start: 0.3, end: 0.35 }],
-				messageB_opacity_out: [1, 0, { start: 0.58, end: 0.63 }],
-				messageC_opacity_out: [1, 0, { start: 0.85, end: 0.9 }],
-                messageA_translateY_out: [0, -20, { start: 0.3, end: 0.35 }],
-				messageB_translateY_out: [0, -20, { start: 0.58, end: 0.63 }],
-				messageC_translateY_out: [0, -20, { start: 0.85, end: 0.9 }],
-                pinB_opacity_out: [1, 0, { start: 0.58, end: 0.63 }],
-				pinC_opacity_out: [1, 0, { start: 0.85, end: 0.9 }]
+				messageB_translateY_in: [30, 0, { start: 0.59, end: 0.62 }],
+				messageC_translateY_in: [30, 0, { start: 0.8, end: 0.9 }],
+				messageA_opacity_in: [0, 1, { start: 0.15, end: 0.2 }],
+				messageB_opacity_in: [0, 1, { start: 0.59, end: 0.62 }],
+				messageC_opacity_in: [0, 1, { start: 0.8, end: 0.9 }],
+				messageA_translateY_out: [0, -20, { start: 0.3, end: 0.35 }],
+				messageB_translateY_out: [0, -20, { start: 0.69, end: 0.77 }],
+				messageC_translateY_out: [0, -20, { start: 0.95, end: 0.97 }],
+				messageA_opacity_out: [1, 0, { start: 0.3, end: 0.35 }],
+				messageB_opacity_out: [1, 0, { start: 0.75, end: 0.77 }],
+				messageC_opacity_out: [1, 0, { start: 0.95, end: 0.97 }],
+				pinB_scaleY: [0, 1, { start: 0.59, end: 0.62 }],
+				pinC_scaleY: [0, 1, { start: 0.85, end: 0.9 }],
+				pinB_opacity_in: [0, 1, { start: 0.59, end: 0.62 }],
+				pinC_opacity_in: [0, 1, { start: 0.85, end: 0.9 }],
+				pinB_opacity_out: [1, 0, {start: 0.69, end: 0.77}],
+				pinC_opacity_out: [1, 0, { start: 0.95, end: 0.97 }]
             },
 
         },
@@ -101,6 +114,24 @@
 
         }
     ];
+
+    function setCanvasImage(){
+        let imgElem;
+        for(let i = 0; i < sceneInfo[0].values.videoImageCount; i++){
+            imgElem = new Image(); //이미지를 생성한다.
+            imgElem.src = `./video/001/IMG_${6726 + i}.JPG`;
+            sceneInfo[0].objs.videoImages.push(imgElem);            
+        }
+
+        let imgElem2;
+        for(let i = 0; i < sceneInfo[2].values.videoImageCount; i++){
+            imgElem2 = new Image();
+            imgElem2.src = `./video/002/IMG_${7027 + i}.JPG`;
+            sceneInfo[2].objs.videoImages.push(imgElem2);
+        }
+
+    }
+    setCanvasImage();
 
     //레이아웃 - sceneInfo의 높이를 세팅해주고, 새로고침하거나, 창을 바꿀 떄도 세팅하도록 한다.
     function setLayout(){
@@ -126,6 +157,12 @@
             }
         }
         document.body.setAttribute('id', `show-scene-${currentScene}`);
+
+
+        //캔버스
+        const heightRatio = window.innerHeight / 1080;
+        sceneInfo[0].objs.canvas.style.transform = `translate3d(-50%, -50%, 0) scale(${heightRatio})`;
+        sceneInfo[2].objs.canvas.style.transform =  `translate3d(-50%, -50%, 0) scale(${heightRatio})`;
 
     }
 
@@ -168,7 +205,10 @@
 
         switch(currentScene){
             case 0: 
-                // console.log(currentScene);
+                let sequence = Math.round(calcValues(values.imgaeSequence, currentYOffset));
+                objs.context.drawImage(objs.videoImages[sequence], 0, 0);
+                objs.canvas.style.opacity = calcValues(values.canvas_opacity,currentYOffset);
+                
                 //A
                 if(scrollRatio <= 0.22){
                     // in
@@ -196,7 +236,7 @@
                     objs.messageC.style.transform = `translateY(${calcValues(values.messageC_translateY_out,currentYOffset)}%)`;
                 }
                 //D
-                if(scrollRatio <= 0.82){
+                if(scrollRatio <= 0.81){
                     objs.messageD.style.opacity = calcValues(values.messageD_opacity_in, currentYOffset);
                     objs.messageD.style.transform = `translateY(${calcValues(values.messageD_translateY_in,currentYOffset)}%)`;
                 }else{
@@ -205,12 +245,15 @@
                 }
 
                 break;
-            case 1:
-                // console.log(currentScene);
-
-                break;
-
             case 2:
+                let sequence2 = Math.round(calcValues(values.imgaeSequence, currentYOffset));
+                objs.context.drawImage(objs.videoImages[sequence2], 0, 0);
+                
+                if(scrollRatio <= 0.5){
+                    objs.canvas.style.opacity = calcValues(values.canvas_opacity_in,currentYOffset);
+                }else{
+                    objs.canvas.style.opacity = calcValues(values.canvas_opacity_out,currentYOffset);
+                }
 
                 if(scrollRatio <= 0.25){
                     objs.messageA.style.opacity = calcValues(values.messageA_opacity_in, currentYOffset);
@@ -221,7 +264,7 @@
                     objs.messageA.style.transform = `translateY(${calcValues(values.messageA_translateY_out, currentYOffset)}%)`;
                 }
 
-                if(scrollRatio <= 0.57){
+                if(scrollRatio <= 0.65){
                     objs.messageB.style.opacity = calcValues(values.messageB_opacity_in, currentYOffset);
                     objs.messageB.style.transform = `translateY(${calcValues(values.messageB_translateY_in,currentYOffset)}%)`;
                     objs.pinB.style.opacity = calcValues(values.pinB_opacity_in, currentYOffset);
@@ -231,7 +274,7 @@
                     objs.messageB.style.transform = `translateY(${calcValues(values.messageB_translateY_out,currentYOffset)}%)`;
                 }
 
-                if(scrollRatio <= 0.83){
+                if(scrollRatio <= 0.93){
                     objs.messageC.style.opacity = calcValues(values.messageC_opacity_in, currentYOffset);
                     objs.messageC.style.transform = `translateY(${calcValues(values.messageC_translateY_in,currentYOffset)}%)`;
                     objs.pinC.style.opacity = calcValues(values.pinC_opacity_in, currentYOffset);
@@ -280,7 +323,10 @@
         scrollLoop();   //스크롤 하면 기본적으로 실행되는 함수
     });
     window.addEventListener('resize',setLayout);
-    window.addEventListener('load',setLayout);
+    window.addEventListener('load',()=>{
+        setLayout();
+        sceneInfo[0].objs.context.drawImage(sceneInfo[0].objs.videoImages[0], 0, 0);
+    });
     
     
 })();
