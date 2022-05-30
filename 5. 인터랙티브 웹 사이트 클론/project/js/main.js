@@ -109,7 +109,21 @@
             heightNum : 5, 
             scrollHeight: 0,
             objs : {
-                container : document.querySelector('#scroll-section-3')
+                container : document.querySelector('#scroll-section-3'),
+                cnavasCaption : document.querySelector('.canvas-caption'),
+                canvas : document.querySelector('.image-blend-canvas'),
+                context : document.querySelector('.image-blend-canvas').getContext('2d'),
+                imagesPath : [
+                    `./images/blend-image-1.jpg`,
+                    `./images/blend-image-2.jpg`
+                ],
+                images : []
+            },
+            values:{
+                rect1X : [0, 0, {start : 0, end : 0}],
+                rect2X : [0, 0, {start : 0, end : 0}],
+                //미리 정할수 없어 0으로 자리만 만들어놓았다.
+                rectStartY : 0,
             }
 
         }
@@ -129,6 +143,14 @@
             imgElem2.src = `./video/002/IMG_${7027 + i}.JPG`;
             sceneInfo[2].objs.videoImages.push(imgElem2);
         }
+
+        let imgElem3;
+        for(let i = 0; i <sceneInfo[3].objs.imagesPath.length; i++ ){
+            imgElem3 = new Image();
+            imgElem3.src = sceneInfo[3].objs.imagesPath[i];
+            sceneInfo[3].objs.images.push(imgElem3);
+        }
+        console.log(sceneInfo[3].objs.images);
 
     }
     setCanvasImage();
@@ -286,6 +308,64 @@
                 }
             break;
             case 3 :
+                // 가로/세로 모두 꽉차게 하기 위해 여기서 세팅(계산필요)
+                const widthRatio = window.innerWidth / objs.canvas.width;
+                const heightRatio = window.innerHeight / objs.canvas.height;
+                let cavasScaleRatio;
+
+                if(widthRatio <= heightRatio){
+                    //캔버스보다 브라우저 창이 홀쭉한 경우
+                    cavasScaleRatio = heightRatio;
+
+                }else{
+                    //캔버스보다 브라우저 창이 납작한 경우
+                    cavasScaleRatio = widthRatio;
+                }
+
+                objs.canvas.style.transform = `scale(${cavasScaleRatio})`;
+                objs.context.fillStyle = 'white';
+                objs.context.drawImage(objs.images[0], 0, 0);
+
+                //캔버스 사이즈에 맞춰 가정한 innerWidth와 innerHeight
+                const recalculatedInnerWidth = window.innerWidth/cavasScaleRatio;
+                const recalculatedInnerHeight = window.innerHeight/cavasScaleRatio;
+
+                if(!values.rectStartY){
+                    // values.rectStartY = objs.canvas.getBoundingClientRect().top;
+                    values.rectStartY = objs.canvas.offsetTop +( objs.canvas.height - objs.canvas.height*cavasScaleRatio) / 2;
+                    console.log(values.rectStartY);
+                    values.rect1X[2].start = (window.innerHeight / 2) / scrollHeight;
+                    values.rect2X[2].start = (window.innerHeight / 2) / scrollHeight;
+                    values.rect1X[2].end = values.rectStartY / scrollHeight;
+                    values.rect2X[2].end = values.rectStartY / scrollHeight;
+
+                }else{
+
+                }
+                
+                const whiteRectWidth = recalculatedInnerWidth * 0.15;
+                values.rect1X[0] = (objs.canvas.width - recalculatedInnerWidth) / 2;
+                values.rect1X[1] = values.rect1X[0] - whiteRectWidth;
+                values.rect2X[0] = values.rect1X[0] + recalculatedInnerWidth - whiteRectWidth;
+                values.rect2X[1] = values.rect2X[0] + whiteRectWidth;
+
+                //좌우 흰색 박스 그리기
+                // objs.context.fillRect(values.rect1X[0], 0, parseInt(whiteRectWidth), objs.canvas.height);
+                // objs.context.fillRect(values.rect2X[0], 0, parseInt(whiteRectWidth), objs.canvas.height);
+                
+            objs.context.fillRect(
+                    parseInt(calcValues(values.rect1X, currentYOffset)),
+                    0, 
+                    parseInt(whiteRectWidth),
+                    objs.canvas.height
+                )
+                objs.context.fillRect(
+                    parseInt(calcValues(values.rect2X, currentYOffset)),
+                    0, 
+                    parseInt(whiteRectWidth),
+                    objs.canvas.height
+                )
+
 
             break;
         }
