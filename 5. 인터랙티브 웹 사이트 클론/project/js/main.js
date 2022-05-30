@@ -306,8 +306,46 @@
                     objs.messageC.style.transform = `translateY(${calcValues(values.messageC_translateY_out,currentYOffset)}%)`;
                     objs.pinC.style.opacity = calcValues(values.pinC_opacity_out, currentYOffset);
                 }
+
+                //currentScence 3에서 쓰는 캔버스를 미리 그려주기 시작
+                if(scrollRatio > 0.9 ){
+                    const objs = sceneInfo[3].objs;
+                    const values = sceneInfo[3].values;
+                    // 가로/세로 모두 꽉차게 하기 위해 여기서 세팅(계산필요)
+                    const widthRatio = window.innerWidth / objs.canvas.width;
+                    const heightRatio = window.innerHeight / objs.canvas.height;
+                    let cavasScaleRatio;
+
+                    if(widthRatio <= heightRatio){
+                        //캔버스보다 브라우저 창이 홀쭉한 경우
+                        cavasScaleRatio = heightRatio;
+
+                    }else{
+                        //캔버스보다 브라우저 창이 납작한 경우
+                        cavasScaleRatio = widthRatio;
+                    }
+
+                    objs.canvas.style.transform = `scale(${cavasScaleRatio})`;
+                    objs.context.fillStyle = 'white';
+                    objs.context.drawImage(objs.images[0], 0, 0);
+
+                    //캔버스 사이즈에 맞춰 가정한 innerWidth와 innerHeight
+                    const recalculatedInnerWidth = window.innerWidth/cavasScaleRatio;
+                    const recalculatedInnerHeight = window.innerHeight/cavasScaleRatio;
+
+                    const whiteRectWidth = recalculatedInnerWidth * 0.15;
+                    values.rect1X[0] = (objs.canvas.width - recalculatedInnerWidth) / 2;
+                    values.rect1X[1] = values.rect1X[0] - whiteRectWidth;
+                    values.rect2X[0] = values.rect1X[0] + recalculatedInnerWidth - whiteRectWidth;
+                    values.rect2X[1] = values.rect2X[0] + whiteRectWidth;
+                    
+                    objs.context.fillRect(parseInt(values.rect1X[0]),0, parseInt(whiteRectWidth),objs.canvas.height);
+                    objs.context.fillRect( parseInt(values.rect2X[0]), 0, parseInt(whiteRectWidth),objs.canvas.height);
+                }
+
             break;
             case 3 :
+                let step = 0;
                 // 가로/세로 모두 꽉차게 하기 위해 여기서 세팅(계산필요)
                 const widthRatio = window.innerWidth / objs.canvas.width;
                 const heightRatio = window.innerHeight / objs.canvas.height;
@@ -366,7 +404,18 @@
                     objs.canvas.height
                 )
 
+                if(scrollRatio < values.rect1X[2].end){
+                    step = 1;
+                    console.log('닿기전');
+                    objs.canvas.classList.remove('sticky');
 
+                }else{
+                    step = 2;
+                    // console.log('닿기후');
+                    objs.canvas.classList.add('sticky');
+                    objs.canvas.style.top = `-${( objs.canvas.height - objs.canvas.height*cavasScaleRatio) / 2}px`;
+
+                }
             break;
         }
     }
