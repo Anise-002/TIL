@@ -4,6 +4,12 @@
     let prevScrollHeight = 0; //현재 스크롤 위치(yOffset)보다 이전에 위치한 스크롤 섹션들의 스크롤 높이 값의 합
     let currentScene = 0; //(인덱스)/현재 활성화된 (눈 앞에 보고 있는 씬) scroll-section
     let enterNewScene;  //새로운 section이 시작된 순간 true;
+    let acc = 0.1;
+    let delayedYOffset = 0;
+    let rafId;
+    let rafState;
+
+
     //애니메이션의 정보
     const sceneInfo = [
         {   
@@ -240,8 +246,8 @@
 
         switch(currentScene){
             case 0: 
-                let sequence = Math.round(calcValues(values.imgaeSequence, currentYOffset));
-                objs.context.drawImage(objs.videoImages[sequence], 0, 0);
+                // let sequence = Math.round(calcValues(values.imgaeSequence, currentYOffset));
+                // objs.context.drawImage(objs.videoImages[sequence], 0, 0);
                 objs.canvas.style.opacity = calcValues(values.canvas_opacity,currentYOffset);
                 
                 //A
@@ -281,8 +287,8 @@
 
                 break;
             case 2:
-                let sequence2 = Math.round(calcValues(values.imgaeSequence, currentYOffset));
-                objs.context.drawImage(objs.videoImages[sequence2], 0, 0);
+                // let sequence2 = Math.round(calcValues(values.imgaeSequence, currentYOffset));
+                // objs.context.drawImage(objs.videoImages[sequence2], 0, 0);
                 
                 if(scrollRatio <= 0.5){
                     objs.canvas.style.opacity = calcValues(values.canvas_opacity_in,currentYOffset);
@@ -474,13 +480,13 @@
             prevScrollHeight += sceneInfo[i].scrollHeight;
         }
 
-        if(yOffset > prevScrollHeight + sceneInfo[currentScene].scrollHeight){
+        if(delayedYOffset > prevScrollHeight + sceneInfo[currentScene].scrollHeight){
             enterNewScene = true;
             currentScene++;
             document.body.setAttribute('id', `show-scene-${currentScene}`);
 
         }
-        if(yOffset < prevScrollHeight){
+        if(delayedYOffset < prevScrollHeight){
             if(currentScene === -1) return; //브라우저 바운스 효과로 인해 마이너스가 되는 것을 방지(모바일)
             enterNewScene = true;
             currentScene--;
@@ -492,12 +498,45 @@
        
     }
 
+    function loop() {
+        delayedYOffset = delayedYOffset + (yOffset - delayedYOffset) * acc;
+
+       if(!enterNewScene){
+           
+            if(currentScene === 0 || currentScene === 2){
+                const currentYOffset = delayedYOffset - prevScrollHeight;
+                const objs =  sceneInfo[currentScene].objs;
+                const values = sceneInfo[currentScene].values;
+                let sequence = Math.round(calcValues(values.imgaeSequence, currentYOffset));
+                if(objs.videoImages[sequence]){
+                    objs.context.drawImage(objs.videoImages[sequence], 0, 0);
+                }
+            }
+       }
+        
+        
+
+        rafId = requestAnimationFrame(loop);
+        console.log('루프');
+
+        if (Math.abs(yOffset - delayedYOffset) < 1) {
+            cancelAnimationFrame(rafId);
+            rafState = false;
+        }
+    }
+
    
     window.addEventListener('scroll',()=>{
         //스크롤 함수를 이용해서 여러개의 함수를 이용하기 위해서 익면 함수를 사용했다.
         yOffset = window.pageYOffset;
         scrollLoop();   //스크롤 하면 기본적으로 실행되는 함수
         checkMenu();
+
+        if (!rafState) {
+            rafId = requestAnimationFrame(loop);
+            rafState = true;
+        }
+
     });
     window.addEventListener('resize',setLayout);
     window.addEventListener('load',()=>{

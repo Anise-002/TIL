@@ -29,7 +29,7 @@
 		let rafState;
 
 		window.addEventListener('scroll', () => {
-			// box.style.width = `${window.pageYOffset}px`;
+			box.style.width = `${window.pageYOffset}px`;
 			if (!rafState) {
 				rafId = requestAnimationFrame(loop);
 				rafState = true;
