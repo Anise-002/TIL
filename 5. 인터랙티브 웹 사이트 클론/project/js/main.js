@@ -132,6 +132,7 @@
 
         }
     ];
+    
 
     function setCanvasImage(){
         let imgElem;
@@ -158,6 +159,14 @@
 
     }
     setCanvasImage();
+
+    function checkMenu(){
+        if(yOffset > 44){
+            document.body.classList.add('local-nav-sticky');
+        }else{
+            document.body.classList.remove('local-nav-sticky');
+        }
+    }
 
     //레이아웃 - sceneInfo의 높이를 세팅해주고, 새로고침하거나, 창을 바꿀 떄도 세팅하도록 한다.
     function setLayout(){
@@ -488,6 +497,7 @@
         //스크롤 함수를 이용해서 여러개의 함수를 이용하기 위해서 익면 함수를 사용했다.
         yOffset = window.pageYOffset;
         scrollLoop();   //스크롤 하면 기본적으로 실행되는 함수
+        checkMenu();
     });
     window.addEventListener('resize',setLayout);
     window.addEventListener('load',()=>{
