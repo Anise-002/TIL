@@ -120,10 +120,12 @@
                 images : []
             },
             values:{
+                //미리 정할수 없어 0으로 자리만 만들어놓았다.
                 rect1X : [0, 0, {start : 0, end : 0}],
                 rect2X : [0, 0, {start : 0, end : 0}],
-                //미리 정할수 없어 0으로 자리만 만들어놓았다.
                 rectStartY : 0,
+                blendHeight : [0, 0, {start: 0, end:0}],
+                canvas_scale : [0, 0, {start: 0, end:0}]
             }
 
         }
@@ -345,7 +347,6 @@
 
             break;
             case 3 :
-                let step = 0;
                 // 가로/세로 모두 꽉차게 하기 위해 여기서 세팅(계산필요)
                 const widthRatio = window.innerWidth / objs.canvas.width;
                 const heightRatio = window.innerHeight / objs.canvas.height;
@@ -405,15 +406,42 @@
                 )
 
                 if(scrollRatio < values.rect1X[2].end){
-                    step = 1;
                     console.log('닿기전');
                     objs.canvas.classList.remove('sticky');
 
                 }else{
-                    step = 2;
                     // console.log('닿기후');
+                    //이미지 블랜드
+                    // imageBlendY : [0, 0, {start: 0, end:0}]
+                    values.blendHeight[0] = 0;
+                    values.blendHeight[1] = objs.canvas.height;
+                    values.blendHeight[2].start = values.rect1X[2].end;
+                    values.blendHeight[2].end = values.blendHeight[2].start + 0.2;
+                    const blendHeight = calcValues(values.blendHeight,currentYOffset);
+
+                    // objs.context.drawImage(img, x, y, width,  height);
+                    objs.context.drawImage(objs.images[1],
+                        0, objs.canvas.height-blendHeight, objs.canvas.width, objs.canvas.height,
+                        0, objs.canvas.height-blendHeight, objs.canvas.width, objs.canvas.height,
+                    );
+
                     objs.canvas.classList.add('sticky');
                     objs.canvas.style.top = `-${( objs.canvas.height - objs.canvas.height*canvasScaleRatio) / 2}px`;
+                    objs.canvas.style.marginTop = `0px`;
+
+                    if(scrollRatio > values.blendHeight[2].end){
+                        values.canvas_scale[0] = canvasScaleRatio;
+                        values.canvas_scale[1] = document.body.offsetWidth / (1.5 * objs.canvas.width);
+                        values.canvas_scale[2].start = values.blendHeight[2].end;
+                        values.canvas_scale[2].end = values.canvas_scale[2].start + 0.2;
+
+                        objs.canvas.style.transform = `scale(${calcValues(values.canvas_scale, currentYOffset)})`;
+                    }
+
+                    if(scrollRatio > values.canvas_scale[2].end && 0 < values.canvas_scale[2].end){
+                        objs.canvas.classList.remove('sticky');
+                        objs.canvas.style.marginTop = `${scrollHeight * 0.4}px`;
+                    }
 
                 }
             break;
