@@ -314,24 +314,24 @@
                     // 가로/세로 모두 꽉차게 하기 위해 여기서 세팅(계산필요)
                     const widthRatio = window.innerWidth / objs.canvas.width;
                     const heightRatio = window.innerHeight / objs.canvas.height;
-                    let cavasScaleRatio;
+                    let canvasScaleRatio;
 
                     if(widthRatio <= heightRatio){
                         //캔버스보다 브라우저 창이 홀쭉한 경우
-                        cavasScaleRatio = heightRatio;
+                        canvasScaleRatio = heightRatio;
 
                     }else{
                         //캔버스보다 브라우저 창이 납작한 경우
-                        cavasScaleRatio = widthRatio;
+                        canvasScaleRatio = widthRatio;
                     }
 
-                    objs.canvas.style.transform = `scale(${cavasScaleRatio})`;
+                    objs.canvas.style.transform = `scale(${canvasScaleRatio})`;
                     objs.context.fillStyle = 'white';
                     objs.context.drawImage(objs.images[0], 0, 0);
 
                     //캔버스 사이즈에 맞춰 가정한 innerWidth와 innerHeight
-                    const recalculatedInnerWidth = window.innerWidth/cavasScaleRatio;
-                    const recalculatedInnerHeight = window.innerHeight/cavasScaleRatio;
+                    const recalculatedInnerWidth = window.innerWidth/canvasScaleRatio;
+                    const recalculatedInnerHeight = window.innerHeight/canvasScaleRatio;
 
                     const whiteRectWidth = recalculatedInnerWidth * 0.15;
                     values.rect1X[0] = (objs.canvas.width - recalculatedInnerWidth) / 2;
@@ -349,28 +349,28 @@
                 // 가로/세로 모두 꽉차게 하기 위해 여기서 세팅(계산필요)
                 const widthRatio = window.innerWidth / objs.canvas.width;
                 const heightRatio = window.innerHeight / objs.canvas.height;
-                let cavasScaleRatio;
+                let canvasScaleRatio;
 
                 if(widthRatio <= heightRatio){
                     //캔버스보다 브라우저 창이 홀쭉한 경우
-                    cavasScaleRatio = heightRatio;
+                    canvasScaleRatio = heightRatio;
 
                 }else{
                     //캔버스보다 브라우저 창이 납작한 경우
-                    cavasScaleRatio = widthRatio;
+                    canvasScaleRatio = widthRatio;
                 }
 
-                objs.canvas.style.transform = `scale(${cavasScaleRatio})`;
+                objs.canvas.style.transform = `scale(${canvasScaleRatio})`;
                 objs.context.fillStyle = 'white';
                 objs.context.drawImage(objs.images[0], 0, 0);
 
                 //캔버스 사이즈에 맞춰 가정한 innerWidth와 innerHeight
-                const recalculatedInnerWidth = window.innerWidth/cavasScaleRatio;
-                const recalculatedInnerHeight = window.innerHeight/cavasScaleRatio;
+                const recalculatedInnerWidth = window.innerWidth/canvasScaleRatio;
+                const recalculatedInnerHeight = window.innerHeight/canvasScaleRatio;
 
                 if(!values.rectStartY){
                     // values.rectStartY = objs.canvas.getBoundingClientRect().top;
-                    values.rectStartY = objs.canvas.offsetTop +( objs.canvas.height - objs.canvas.height*cavasScaleRatio) / 2;
+                    values.rectStartY = objs.canvas.offsetTop +( objs.canvas.height - objs.canvas.height*canvasScaleRatio) / 2;
                     console.log(values.rectStartY);
                     values.rect1X[2].start = (window.innerHeight / 2) / scrollHeight;
                     values.rect2X[2].start = (window.innerHeight / 2) / scrollHeight;
@@ -413,7 +413,7 @@
                     step = 2;
                     // console.log('닿기후');
                     objs.canvas.classList.add('sticky');
-                    objs.canvas.style.top = `-${( objs.canvas.height - objs.canvas.height*cavasScaleRatio) / 2}px`;
+                    objs.canvas.style.top = `-${( objs.canvas.height - objs.canvas.height*canvasScaleRatio) / 2}px`;
 
                 }
             break;
