@@ -215,6 +215,7 @@
         //현재 씬(스크롤섹션)에서 스크롤된 범위를 비율로 구하기
         const scrollHeight = sceneInfo[currentScene].scrollHeight;
         const scrollRatio = currentYOffset / scrollHeight;
+        const valuesDistance = values[1] - values[0];
         
         if(values.length === 3){
             //start~end 사이에 애니메이션 실행
@@ -223,14 +224,14 @@
             const partScrollHeight = partScrollEnd - partScrollStart;
 
             if(currentYOffset >= partScrollStart && currentYOffset <= partScrollEnd ){
-                rv = (currentYOffset-partScrollStart) / partScrollHeight * ( values[1]-values[0]) + values[0];
+                rv = (currentYOffset-partScrollStart) / partScrollHeight * valuesDistance + values[0];
             }else if(currentYOffset < partScrollStart ){
                 rv = values[0];
             }else if(currentYOffset > partScrollEnd ){
                 rv = values[1];
             }
         }else{
-            rv = scrollRatio * ( values[1]-values[0]) + values[0];
+            rv = scrollRatio * valuesDistance + values[0];
         }
         
         return rv;
@@ -383,19 +384,17 @@
                 objs.context.drawImage(objs.images[0], 0, 0);
 
                 //캔버스 사이즈에 맞춰 가정한 innerWidth와 innerHeight
-                const recalculatedInnerWidth = window.innerWidth/canvasScaleRatio;
+                const recalculatedInnerWidth = window.innerWidth/canvasScaleRatio;  //원래 캔버스 기준의 px로 innerWidht값을 구한다.
                 const recalculatedInnerHeight = window.innerHeight/canvasScaleRatio;
 
                 if(!values.rectStartY){
                     // values.rectStartY = objs.canvas.getBoundingClientRect().top;
                     values.rectStartY = objs.canvas.offsetTop +( objs.canvas.height - objs.canvas.height*canvasScaleRatio) / 2;
-                    console.log(values.rectStartY);
+                    //transform: scale을 한 요소는 transform을 적용하기 전의 offsetTop값을 가져와서  계산을 한 것이다.
                     values.rect1X[2].start = (window.innerHeight / 2) / scrollHeight;
                     values.rect2X[2].start = (window.innerHeight / 2) / scrollHeight;
                     values.rect1X[2].end = values.rectStartY / scrollHeight;
                     values.rect2X[2].end = values.rectStartY / scrollHeight;
-
-                }else{
 
                 }
                 
