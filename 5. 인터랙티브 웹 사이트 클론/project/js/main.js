@@ -8,6 +8,7 @@
     let delayedYOffset = 0;
     let rafId;
     let rafState;
+    console.log(window.innerHeight);
 
 
     //애니메이션의 정보
@@ -161,11 +162,10 @@
             imgElem3.src = sceneInfo[3].objs.imagesPath[i];
             sceneInfo[3].objs.images.push(imgElem3);
         }
-        console.log(sceneInfo[3].objs.images);
 
     }
-    setCanvasImage();
 
+    //메뉴바
     function checkMenu(){
         if(yOffset > 44){
             document.body.classList.add('local-nav-sticky');
@@ -202,6 +202,8 @@
 
         //캔버스
         const heightRatio = window.innerHeight / 1080;
+        console.log(window.innerHeight);
+        console.log(heightRatio);
         sceneInfo[0].objs.canvas.style.transform = `translate3d(-50%, -50%, 0) scale(${heightRatio})`;
         sceneInfo[2].objs.canvas.style.transform =  `translate3d(-50%, -50%, 0) scale(${heightRatio})`;
 
@@ -442,8 +444,8 @@
                     );
 
                     objs.canvas.classList.add('sticky');
-                    objs.canvas.style.top = `-${( objs.canvas.height - objs.canvas.height*canvasScaleRatio) / 2}px`;
                     objs.canvas.style.marginTop = `0px`;
+                    objs.canvas.style.top = `-${( objs.canvas.height - objs.canvas.height*canvasScaleRatio) / 2}px`;
 
                     if(scrollRatio > values.blendHeight[2].end){
                         values.canvas_scale[0] = canvasScaleRatio;
@@ -524,7 +526,7 @@
         }
     }
 
-   
+    setCanvasImage();
     window.addEventListener('scroll',()=>{
         //스크롤 함수를 이용해서 여러개의 함수를 이용하기 위해서 익면 함수를 사용했다.
         yOffset = window.pageYOffset;
@@ -536,12 +538,19 @@
             rafState = true;
         }
 
-    });
-    window.addEventListener('resize',setLayout);
+    });   
     window.addEventListener('load',()=>{
-        setLayout();
         sceneInfo[0].objs.context.drawImage(sceneInfo[0].objs.videoImages[0], 0, 0);
+        setLayout();
+    }); 
+    window.addEventListener('resize',()=>{
+        if(window.innerWidth > 900){
+            setLayout();
+        }
+        sceneInfo[3].values.rectStartY = 0;
     });
+    window.addEventListener('orientationchange', setLayout);
+ 
     
     
 })();
