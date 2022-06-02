@@ -187,6 +187,50 @@ a{
     flex-direction: column;
     align-items: center;
 }
+.loading{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom : 0;
+    left: 0;
+    z-index: 100;
+    background: white;
+    opacity: 0;
+    transition: 0.5s;
+}
+.before-load .loading{
+    opacity: 1;
+}
+@keyframes loading-spin {
+    100%{transform: rotate(360deg);}
+}
+@keyframes loaing-circle-ani {
+    0%{stroke-dashoffset: 150;}
+    70%{stroke-dashoffset: -147;}
+    100%{stroke-dashoffset: -157;}
+}
+.loading-circle{
+    width: 54px;
+    height: 54px;
+    animation: loading-spin 2s infinite;
+}
+
+.loading-circle circle{
+    stroke: black;
+    stroke-width: 4;
+    stroke-dasharray: 157;
+    /* getTotalLength()로 stroke의 길이를 얻어 올 수 있음 */
+    stroke-dashoffset: 0;
+    fill: none;
+    animation: loaing-circle-ani 1s infinite;
+}
+/* .loading-circle circle:hover{
+    stroke-dashoffset: -157;
+} */
 @media (min-width: 1024px){
     #scroll-section-0 h1{
         font-size: 9vw;

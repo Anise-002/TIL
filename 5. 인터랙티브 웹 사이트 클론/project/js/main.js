@@ -8,7 +8,6 @@
     let delayedYOffset = 0;
     let rafId;
     let rafState;
-    console.log(window.innerHeight);
 
 
     //애니메이션의 정보
@@ -202,8 +201,6 @@
 
         //캔버스
         const heightRatio = window.innerHeight / 1080;
-        console.log(window.innerHeight);
-        console.log(heightRatio);
         sceneInfo[0].objs.canvas.style.transform = `translate3d(-50%, -50%, 0) scale(${heightRatio})`;
         sceneInfo[2].objs.canvas.style.transform =  `translate3d(-50%, -50%, 0) scale(${heightRatio})`;
 
@@ -352,7 +349,7 @@
                     objs.context.drawImage(objs.images[0], 0, 0);
 
                     //캔버스 사이즈에 맞춰 가정한 innerWidth와 innerHeight
-                    const recalculatedInnerWidth = window.innerWidth/canvasScaleRatio;
+                    const recalculatedInnerWidth = document.body.offsetWidth/canvasScaleRatio;
                     const recalculatedInnerHeight = window.innerHeight/canvasScaleRatio;
 
                     const whiteRectWidth = recalculatedInnerWidth * 0.15;
@@ -386,7 +383,7 @@
                 objs.context.drawImage(objs.images[0], 0, 0);
 
                 //캔버스 사이즈에 맞춰 가정한 innerWidth와 innerHeight
-                const recalculatedInnerWidth = window.innerWidth/canvasScaleRatio;  //원래 캔버스 기준의 px로 innerWidht값을 구한다.
+                const recalculatedInnerWidth = document.body.offsetWidth/canvasScaleRatio;  //원래 캔버스 기준의 px로 innerWidht값을 구한다.
                 const recalculatedInnerHeight = window.innerHeight/canvasScaleRatio;
 
                 if(!values.rectStartY){
@@ -410,7 +407,7 @@
                 // objs.context.fillRect(values.rect1X[0], 0, parseInt(whiteRectWidth), objs.canvas.height);
                 // objs.context.fillRect(values.rect2X[0], 0, parseInt(whiteRectWidth), objs.canvas.height);
                 
-            objs.context.fillRect(
+                objs.context.fillRect(
                     parseInt(calcValues(values.rect1X, currentYOffset)),
                     0, 
                     parseInt(whiteRectWidth),
@@ -424,7 +421,7 @@
                 )
 
                 if(scrollRatio < values.rect1X[2].end){
-                    console.log('닿기전');
+                    //console.log('닿기전');
                     objs.canvas.classList.remove('sticky');
 
                 }else{
@@ -540,8 +537,9 @@
 
     });   
     window.addEventListener('load',()=>{
-        sceneInfo[0].objs.context.drawImage(sceneInfo[0].objs.videoImages[0], 0, 0);
+        document.body.classList.remove('before-load');
         setLayout();
+        sceneInfo[0].objs.context.drawImage(sceneInfo[0].objs.videoImages[0], 0, 0);
     }); 
     window.addEventListener('resize',()=>{
         if(window.innerWidth > 900){
@@ -550,6 +548,9 @@
         sceneInfo[3].values.rectStartY = 0;
     });
     window.addEventListener('orientationchange', setLayout);
+    document.querySelector('.loading').addEventListener('transitionend',(e)=>{
+        document.body.removeChild(e.currentTarget);
+    })
  
     
     
