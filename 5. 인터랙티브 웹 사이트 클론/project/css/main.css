@@ -19,8 +19,15 @@ a{
 }
 
 /* 메뉴 */
+.before-load .container{
+    display: none;
+}
 body.before-load{
     overflow: hidden;
+}
+.container{
+    /* 아이폰 가로 스크롤 방지  */
+    overflow-x: hidden;
 }
 .global-nav{
     position: absolute;
@@ -45,7 +52,11 @@ body.before-load{
     position: fixed;
     top: 0;
     background: rgba(255, 255, 255, 0.1);
+    -webkit-backdrop-filter:saturate(180%) blur(15px);
+    -moz-backdrop-filter:saturate(180%) blur(15px);
+    -o-backdrop-filter:saturate(180%) blur(15px);
     backdrop-filter: saturate(180%) blur(15px);
+    /* backdrop-filter는 ios에 적용되지 않아 -webkit-을 사용해 적용시켜준다. */
 }
 .global-nav-links,
 .local-nav-links{
@@ -146,7 +157,7 @@ body.before-load{
 }
 .canvas-caption{
     max-width: 1000px;
-    margin: -8em auto 0;
+    margin: -24rem auto 0;
     padding: 0 1rem;
     font-size: 1.2rem;
     color: #888;
@@ -269,6 +280,8 @@ body.before-load{
     }
     .canvas-caption{
         font-size: 2rem;
+        margin-top: -8rem;
+        padding: 0;
     }
     
     /* rem은 고정값으로 사용하는데 vw는 창크기에 따라 폰트 사이즈가 변화한다. */

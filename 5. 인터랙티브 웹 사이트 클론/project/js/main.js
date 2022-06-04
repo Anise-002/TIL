@@ -523,12 +523,27 @@
         }
     }
 
-    setCanvasImage();
   
     window.addEventListener('load',()=>{
         document.body.classList.remove('before-load');
         setLayout();
         sceneInfo[0].objs.context.drawImage(sceneInfo[0].objs.videoImages[0], 0, 0);
+
+        // scrollTo(x,y); -> 자동으로 스크롤하도록해주는
+        let tempYOffset = yOffset;
+        let tempScrollCount = 0;
+        if(yOffset >0){
+            let siId = setInterval(()=>{
+                window.scrollTo(0,tempYOffset);
+                tempYOffset += 5;
+                if(tempScrollCount > 20){
+                    clearInterval(siId);
+                }
+                tempScrollCount++;
+    
+            },20);
+        }
+       
 
         document.querySelector('.loading').addEventListener('transitionend',(e)=>{
             document.body.removeChild(e.currentTarget);
@@ -548,15 +563,16 @@
         });
         
         window.addEventListener('resize',()=>{
-                if(window.innerWidth > 900){
-                    setLayout();
-        }
+            if(window.innerWidth > 900){
+                setLayout();
             sceneInfo[3].values.rectStartY = 0;
+            }
         });
-        window.addEventListener('orientationchange', setLayout);
-       
-     
+        window.addEventListener('orientationchange', ()=>{
+            setTimeout(setLayout,500);
+        });
     }); 
+    setCanvasImage();
     
     
     
