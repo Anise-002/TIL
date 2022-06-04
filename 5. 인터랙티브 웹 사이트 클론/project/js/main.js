@@ -524,34 +524,40 @@
     }
 
     setCanvasImage();
-    window.addEventListener('scroll',()=>{
-        //스크롤 함수를 이용해서 여러개의 함수를 이용하기 위해서 익면 함수를 사용했다.
-        yOffset = window.pageYOffset;
-        scrollLoop();   //스크롤 하면 기본적으로 실행되는 함수
-        checkMenu();
-
-        if (!rafState) {
-            rafId = requestAnimationFrame(loop);
-            rafState = true;
-        }
-
-    });   
+  
     window.addEventListener('load',()=>{
         document.body.classList.remove('before-load');
         setLayout();
         sceneInfo[0].objs.context.drawImage(sceneInfo[0].objs.videoImages[0], 0, 0);
-    }); 
-    window.addEventListener('resize',()=>{
-        if(window.innerWidth > 900){
-            setLayout();
+
+        document.querySelector('.loading').addEventListener('transitionend',(e)=>{
+            document.body.removeChild(e.currentTarget);
+        })
+
+
+        window.addEventListener('scroll',()=>{
+            //스크롤 함수를 이용해서 여러개의 함수를 이용하기 위해서 익면 함수를 사용했다.
+            yOffset = window.pageYOffset;
+            scrollLoop();   //스크롤 하면 기본적으로 실행되는 함수
+            checkMenu();
+    
+            if (!rafState) {
+                rafId = requestAnimationFrame(loop);
+                rafState = true;
+            }
+        });
+        
+        window.addEventListener('resize',()=>{
+                if(window.innerWidth > 900){
+                    setLayout();
         }
-        sceneInfo[3].values.rectStartY = 0;
-    });
-    window.addEventListener('orientationchange', setLayout);
-    document.querySelector('.loading').addEventListener('transitionend',(e)=>{
-        document.body.removeChild(e.currentTarget);
-    })
- 
+            sceneInfo[3].values.rectStartY = 0;
+        });
+        window.addEventListener('orientationchange', setLayout);
+       
+     
+    }); 
+    
     
     
 })();
