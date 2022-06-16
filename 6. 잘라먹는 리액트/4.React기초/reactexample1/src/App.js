@@ -1,41 +1,25 @@
 // import './App.css';
 
 import MyHeader from './myHeader';
-import MyFooter from './MyFooter';
+import Counter from './Counter';
+import Container from './Container';
 
 function App() {
-  const style = {
-    App :{
-      backgroundColor : "black",
-    },
-    h2 :{
-      color : "red"
-    },
-    bold_text:{
-      color : 'green'
-    }
+  const countProps = {
+    a : 1,
+    b : 2,
+    c : 3,
+    d : 4,
+    e : 5,
+    // initialValue : 5,
   }
 
-  const func = () =>{
-    return "func";
-  }
-  //{}안에는 문자열,숫자, 또는 연산, 함수 호출도 가능하다.
-  // 다만 결과값이 문자열, 숫자가 아닌 것들은 나타나지 않는다.
-
-  const number = 5;
-
-  return ( //JSX문법
-    <div className="App" style={style.App}>
+  return(
+    <Container>
       <MyHeader/>
-        <h2 style={style.h2}>안녕 리액트 {func()}</h2>
-        <b style={style.bold_text} id="bold_text">
-          React.js<br/>
-          {number}는 : {number % 2 === 0 ? '짝수' : '홀수'}
-        </b>
-
-      <MyFooter/>
-    </div>
-  );
+      <Counter {...countProps}/>
+    </Container>
+  )
 }
 
 export default App;
