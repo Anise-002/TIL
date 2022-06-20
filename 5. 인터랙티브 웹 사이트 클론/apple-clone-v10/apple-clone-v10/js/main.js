@@ -497,7 +497,7 @@
 			currentScene--;
 			document.body.setAttribute('id', `show-scene-${currentScene}`);
 		}
-
+		console.log(enterNewScene);
 		if (enterNewScene) return;
 
 		playAnimation();
