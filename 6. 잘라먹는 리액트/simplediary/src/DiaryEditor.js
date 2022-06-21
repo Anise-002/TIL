@@ -1,13 +1,13 @@
 import {useRef,useState} from "react";
 
-const DiaryEditor = ()=>{
+const DiaryEditor = ({onCreate})=>{
 
     const authorInput = useRef();
     const contentInput = useRef();
 
     const [state , setState] = useState({
         author : "",
-        content : "",
+        content : "", 
         emotion : "1",
     });
 
@@ -31,7 +31,15 @@ const DiaryEditor = ()=>{
             contentInput.current.focus();
             return;
         }
+        
+        onCreate(state.author, state.content, state.emotion);
         alert("저장 성공!");
+        //저장 후 초기화해서 아무것도 안 남게
+        setState({
+            author : "",
+            content : "",
+            emotion : "1",
+        })
     }
 
     return(
@@ -47,7 +55,7 @@ const DiaryEditor = ()=>{
         </div>
         <div>
             <textarea 
-            ref = {contentInput}
+            ref = {contentInput} 
             name = "content"
             value = {state.content}
             onChange = {handleChange}/>
