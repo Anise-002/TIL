@@ -1,40 +1,36 @@
 import React, { useEffect, useState } from 'react';
 
-const Lifecycle = () => {
-
-    const [count, setCount] = useState(0);
-    const [text, setText] = useState("");
+const UnmountTest = () => {
 
     useEffect(() => {
         console.log("Mount!");
-    }, []);
 
-    useEffect(() => {
-        console.log("Update!");
-    });
-
-    useEffect(() => {
-        console.log(`count is update : ${count}`);
-        if (count > 5) {
-            alert("count가 5를 넘었습니다ㅏ. 따라서 1로 초기화 됩니다.");
-            setCount(1);
+        return () => {
+            //Unmount시점에서 실행되게 된다.
+            console.log("Unmount!");
         }
-    }, [count]);
+    }, [])
 
-    useEffect(() => {
-        console.log(`text is update : ${text}`);
-    }, [text]);
+    return (
+        <div>Unmount Testing Component</div>
+    )
+}
+
+const Lifecycle = () => {
+
+    const [isVisible, setIsVisible] = useState(false);
+    const toggle = () => setIsVisible(!isVisible);
 
     return (
         <div style={{ padding: 20 }}>
-            <div>
-                {count}
-                <button onClick={() => setCount(count + 1)}>+</button>
-            </div>
-            <div>
-                <input value={text} onChange={(e) => { setText(e.target.value) }}></input>
-            </div>
+            <button onClick={toggle}>on/off</button>
+            {isVisible && <UnmountTest />}
+            { /* 단락 회로 평가를 통해
+isVisible이 false라면 isVisible값이 나오고,
+isVisible이 ture이면 unmountTest의 값이 화면에 출력된다. */}
+
         </div>
     )
 }
 export default Lifecycle;
+
