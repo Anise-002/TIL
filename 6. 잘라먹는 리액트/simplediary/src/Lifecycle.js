@@ -26,8 +26,8 @@ const Lifecycle = () => {
             <button onClick={toggle}>on/off</button>
             {isVisible && <UnmountTest />}
             { /* 단락 회로 평가를 통해
-isVisible이 false라면 isVisible값이 나오고,
-isVisible이 ture이면 unmountTest의 값이 화면에 출력된다. */}
+                isVisible이 false라면 isVisible값이 나오고,
+                isVisible이 ture이면 unmountTest의 값이 화면에 출력된다. */}
 
         </div>
     )
