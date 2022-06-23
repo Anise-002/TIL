@@ -1,9 +1,8 @@
-import { useMemo, useEffect, useRef, useState } from 'react';
+import { useCallback, useMemo, useEffect, useRef, useState } from 'react';
 import './App.css';
 import DiaryEditor from './DiaryEditor';
 import DiaryList from './DiaryList';
 import Lifecycle from './Lifecycle';
-import OptimizeTest from './OptimizeTest';
 
 //https://jsonplaceholder.typicode.com/comments
 
@@ -34,7 +33,7 @@ function App() {
     getDate();
   }, [])
 
-  const onCreate = (author, content, emotion) => {
+  const onCreate = useCallback((author, content, emotion) => {
     const created_date = new Date().getTime();
     const newItem = {
       author,
@@ -44,8 +43,8 @@ function App() {
       id: dataId.current,
     }
     dataId.current += 1;
-    setData([newItem, ...data]);
-  }
+    setData((data) => [newItem, ...data]);
+  }, []);
 
   const onRemove = (targetId) => {
     const newDiaryList = data.filter((it) => it.id !== targetId);
@@ -72,7 +71,6 @@ function App() {
 
   return (
     <div className="App">
-      <OptimizeTest />
       <Lifecycle />
       <DiaryEditor onCreate={onCreate} />
       <div>전체 일기 : {data.length}</div>
