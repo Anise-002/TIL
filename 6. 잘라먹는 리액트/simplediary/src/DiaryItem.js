@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
+import { DiaryDispatchContext } from "./App";
 
-const DiaryItem = ({ onEdit, onRemove, author, content, emotion, created_date, id }) => {
+const DiaryItem = ({ author, content, emotion, created_date, id }) => {
 
-    useEffect(() => { console.log(`${id}ㅂㅓㄴㅉㅐㄹㅐㄴㄷㅓ `) })
+    const { onRemove, onEdit } = useContext(DiaryDispatchContext);
 
     //수정 중인지 아닌지 상태를 불리언 값으로 보내준다.
     const [isEdit, setIsEdit] = useState(false);
